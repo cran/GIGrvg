@@ -1,0 +1,9 @@
+8559e517673c5aa78de3a7f4bfa018b6 *DESCRIPTION
+a939b67880dbcae1b9513241c627aec5 *NAMESPACE
+68d2c3ec5f3b40d54074bc431aad7ebe *R/rgig.R
+3eefb9bb409a3f99670779ce14cdb702 *man/GIGrvg-package.Rd
+87e4abb357a5f757f0272a35678f6c7e *man/rgig.Rd
+1fe9850a3bbf284448ab0bc9fc0bfc0f *src/GIGrvg.c
+444e10cb3ed1ef91642acbb2b8e9ac92 *src/GIGrvg.h
+1919d96b720e82fd3dfecbf1277bce4f *src/Makevars
+0d8286550fbb07eb34b9161030c06d19 *tests/examples.R
