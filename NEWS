@@ -1,0 +1,9 @@
+
+Version 0.2: 2014-02-06
+
+	- Made C function rgig() callable from other packages
+          (see doc/README).
+
+Version 0.1: 2013-05-27
+
+        - First public release.

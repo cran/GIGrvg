@@ -1,0 +1,53 @@
+The GIG random number generator is implemented in C function 'rgig'.
+It is exported and can be used in C code in other package.
+
+Here is an example of its usage within a package called "mypack".
+
+
+DESCRIPTION:
+============
+
+Depends: GIGrvg
+LinkingTo: GIGrvg
+
+
+C code:
+=======
+
+#include <Rinternals.h> 
+#include <R_ext/Rdynload.h>
+
+SEXP my_rgig (SEXP n, SEXP lambda, SEXP chi, SEXP psi)
+{ 
+   SEXP (*fun)(SEXP,SEXP,SEXP,SEXP) = NULL;
+
+   if (!fun) 
+      fun = (SEXP(*)(SEXP,SEXP,SEXP,SEXP)) R_GetCCallable("GIGrvg", "rgig");
+
+   return (fun(n,lambda,chi,psi));
+}
+
+
+R code:
+=======
+
+myrgig <- function(n=1, lambda, chi, psi) {
+  ## ------------------------------------------------------------------------
+  ## Generate GIG distributed random variates
+  ##
+  ## density proportional to
+  ##    f(x) = x^{lambda-1} e^{-1/2 (chi/x+psi x)}
+  ## 
+  ##       x >= 0
+  ## ------------------------------------------------------------------------
+  ## Arguments:
+  ##
+  ##   n ....... sample size
+  ##   lambda .. parameter for distribution
+  ##   chi   ... parameter for distribution                                   
+  ##   psi   ... parameter for distribution                                   
+  ## ------------------------------------------------------------------------
+
+  ## generate sample
+  .Call("my_rgig", n, lambda, chi, psi, PACKAGE="mypack")
+}

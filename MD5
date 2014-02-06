@@ -1,9 +1,12 @@
-8559e517673c5aa78de3a7f4bfa018b6 *DESCRIPTION
+22a4dcb766cc5f17646549fe4c8cfcfd *DESCRIPTION
 a939b67880dbcae1b9513241c627aec5 *NAMESPACE
+f19ab1a0b36711f5c5ee12d205d90c18 *NEWS
 68d2c3ec5f3b40d54074bc431aad7ebe *R/rgig.R
-3eefb9bb409a3f99670779ce14cdb702 *man/GIGrvg-package.Rd
+acce23d7c279ae215582a6148731b4ab *inst/doc/README
+6fea79b9a8760ad32b0695fe889c604d *man/GIGrvg-package.Rd
 87e4abb357a5f757f0272a35678f6c7e *man/rgig.Rd
 1fe9850a3bbf284448ab0bc9fc0bfc0f *src/GIGrvg.c
-444e10cb3ed1ef91642acbb2b8e9ac92 *src/GIGrvg.h
+ed04e3ffd5d62beef30bfae60bd9bf69 *src/GIGrvg.h
+3bcc56684abcb06aad31296b17ddd3bf *src/GIGrvg_init.c
 1919d96b720e82fd3dfecbf1277bce4f *src/Makevars
 0d8286550fbb07eb34b9161030c06d19 *tests/examples.R
