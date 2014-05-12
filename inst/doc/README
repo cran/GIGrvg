@@ -1,7 +1,16 @@
-The GIG random number generator is implemented in C function 'rgig'.
-It is exported and can be used in C code in other package.
+The GIG random number generator is implemented in C functions 
+'rgig' and 'do_rgig'.
+They are exported and can be used in C code in other package.
 
-Here is an example of its usage within a package called "mypack".
+Here is an example of the usage of 'rgig' within a package 
+called "mypack".
+
+For a description of 'do_rgig' the interested reader is
+refered its C code. 
+Differences to 'rgig' are:
+ (1) do_rgig() does not call GetRNGstate() and PutRNGstate(). You have
+     to take care of doing so in the function that calls do_rgig().
+ (2) Signature is SEXP do_rgig(int, double, double, double).
 
 
 DESCRIPTION:

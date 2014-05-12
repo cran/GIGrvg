@@ -169,6 +169,9 @@ stopifnot (iserror(rgig(1, 1, 1,-1)), TRUE)
 
 ## --- just run generator ----------------------------------------------------
 
+if(!interactive())
+    set.seed(123)
+
 lambda <- c(-100, -10, -1, -0.1, 0, 0.1, 1, 10, 100)
 chi <- c(0, 1e-12, 0.01, 0.1, 1, 10, 100)
 psi <- c(0, 1e-12, 0.01, 0.1, 1, 10, 100)
@@ -176,6 +179,7 @@ psi <- c(0, 1e-12, 0.01, 0.1, 1, 10, 100)
 for (l in lambda) { for (c in chi) { for (p in psi) {
         if (!check.params(l,c,p)) next
         x <- rgig(1,l,c,p)
+        cat ("x=",signif(x,5),";\tlambda=",l,"; chi=",c,"; psi=",p,"\n", sep="")
         if (! isTRUE(is.finite(x))) {
                 cat ("x=",x,";\tlambda=",l,"; chi=",c,"; psi=",p,"\n", sep="")
                 stop ("result not finite")

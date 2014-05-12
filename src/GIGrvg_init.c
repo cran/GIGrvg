@@ -24,6 +24,7 @@ R_init_GIGrvg (DllInfo *info  ATTRIBUTE__UNUSED)
 {
   /* Declare some C routines to be callable from other packages */ 
   R_RegisterCCallable("GIGrvg", "rgig", (DL_FUNC) rgig);
+  R_RegisterCCallable("GIGrvg", "do_rgig", (DL_FUNC) do_rgig);
 }
 
 /*---------------------------------------------------------------------------*/

@@ -162,6 +162,7 @@ SEXP dgig(SEXP sexp_x, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi, SEXP sexp
 SEXP rgig(SEXP sexp_n, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi)
 /*---------------------------------------------------------------------------*/
 /* Draw sample from GIG distribution.                                        */
+/* Wrapper for do_rgig() with GetRNGstate() ... PutRNGstate()                */
 /*                                                                           */
 /* Parameters:                                                               */
 /*   n ....... sample size (positive integer)                                */
@@ -175,21 +176,56 @@ SEXP rgig(SEXP sexp_n, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi)
 {
   int n;                   /* sample size */
   double lambda, chi, psi; /* parameters of distribution */
-  double omega, alpha;     /* parameters of standard distribution */
   SEXP sexp_res;           /* results */
-  double *res;
-  int i;
 
   /* extract sample size */
   n = *(INTEGER (AS_INTEGER (sexp_n)));
-  if (n<=0) {
-    error("sample size 'n' must be positive integer.");
-  }
 
   /* extract parameters of distribution */
   lambda = *(REAL(AS_NUMERIC(sexp_lambda)));
   chi = *(REAL(AS_NUMERIC(sexp_chi)));
   psi = *(REAL(AS_NUMERIC(sexp_psi)));
+
+  /* Get state of R uniform PRNG */
+  GetRNGstate();
+
+  /* run generator */
+  sexp_res = do_rgig(n, lambda, chi, psi);
+
+  /* Return state of PRNG to R */
+  PutRNGstate();
+
+  /* return result to R */
+  return (sexp_res);
+
+} /* end of rgig() */
+
+/*---------------------------------------------------------------------------*/
+
+SEXP do_rgig(int n, double lambda, double chi, double psi)
+/*---------------------------------------------------------------------------*/
+/* Draw sample from GIG distribution.                                        */
+/* without calling GetRNGstate() ... PutRNGstate()                           */
+/*                                                                           */
+/* Parameters:                                                               */
+/*   n ....... sample size (positive integer)                                */
+/*   lambda .. parameter for distribution                                    */
+/*   chi   ... parameter for distribution                                    */
+/*   psi   ... parameter for distribution                                    */
+/*                                                                           */
+/* Return:                                                                   */
+/*   random sample of size 'n'                                               */
+/*---------------------------------------------------------------------------*/
+{
+  double omega, alpha;     /* parameters of standard distribution */
+  SEXP sexp_res;           /* results */
+  double *res;
+  int i;
+
+  /* check sample size */
+  if (n<=0) {
+    error("sample size 'n' must be positive integer.");
+  }
 
   /* check GIG parameters: */
   if ( !(R_FINITE(lambda) && R_FINITE(chi) && R_FINITE(psi)) ||
@@ -203,9 +239,6 @@ SEXP rgig(SEXP sexp_n, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi)
   /* allocate array for random sample */
   PROTECT(sexp_res = NEW_NUMERIC(n));
   res = REAL(sexp_res);
-
-  /* Get state of R uniform PRNG */
-  GetRNGstate();
 
   if (chi < ZTOL) { 
     /* special cases which are basically Gamma and Inverse Gamma distribution */
@@ -259,14 +292,12 @@ SEXP rgig(SEXP sexp_n, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi)
       
     } while (0);
   }
-  /* Return state of PRNG to R */
-  PutRNGstate();
 
-  /* return result to R */
+  /* return result */
   UNPROTECT(1);
   return sexp_res;
 
-} /* end of rgig() */
+} /* end of do_rgig() */
 
 
 /*****************************************************************************/

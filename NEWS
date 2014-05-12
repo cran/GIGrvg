@@ -1,8 +1,20 @@
+Version 0.3: 2014-05-12
+
+	- Created new low level C function do_rgig() which 
+	  is also callable from other packages. 
+	  This function 
+	   (a) does NOT take care of getting/setting RNGstate, and
+	   (b) takes int, double, double, double instead of 
+	       SEXP, SEXP, SEXP, SEXP as arguments. 
+	  Please use do_rgig() only if you manually get/set RNGstate
+	  within the C-function calling it.
+
 
 Version 0.2: 2014-02-06
 
 	- Made C function rgig() callable from other packages
           (see doc/README).
+
 
 Version 0.1: 2013-05-27
 

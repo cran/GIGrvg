@@ -1,0 +1,1735 @@
+
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> 
+> library(GIGrvg)
+> 
+> ## --- auxiliary functions ---------------------------------------------------
+> 
+> ## check whether error has been thrown
+> iserror <- function (expr) { is(try(expr), "try-error") }
+> 
+> ## mode of GIG distribution
+> gig.mode <- function (lambda, chi, psi) {
++         omega = sqrt(psi*chi)
++ 
++         ## lambda can be < 0 !!
++         if (lambda >= 1.)
++                 mode <- (sqrt((lambda-1)*(lambda-1) + psi*chi)+(lambda-1)) / psi
++         else
++                 mode <- chi / (sqrt((1-lambda)*(1-lambda) + psi*chi)+(1-lambda))
++ 
++         mode
++ }
+> 
+> ## check GIG parameters
+> check.params <- function (lambda, chi, psi) {
++         valid <- FALSE
++         if ((chi >= 0 && psi >= 0)   &&
++             (chi != 0 || lambda > 0) &&
++             (psi != 0 || lambda < 0)) {
++                 valid <- TRUE
++         }
++         valid
++ }
+> 
+> ## show warnings immediately
+> options(warn=1)
+> 
+> ##############################################################################
+> ##
+> ## dgig()
+> ##
+> ##############################################################################
+> 
+> ## --- check handling of invalid parameters ----------------------------------
+> 
+> xvals <- c(1,NA,NaN)
+> lambda <- c(1,NA,NaN,Inf)
+> chi <- c(1, NA, NaN, Inf)
+> psi <- c(1, NA, NaN, Inf)
+> 
+> for (x in xvals) { for (l in lambda) { for (c in chi) { for (p in psi) {
++         f <- dgig(x,l,c,p)
++         lf <- dgig(x,l,c,p,TRUE)
++         a <- c(x,l,c,p)
++         if (length(a[!is.finite(a)])>0 && !(is.na(f) && is.na(lf))) {
++                 cat ("f=",f,"; logf=",lf,"\t",
++                      "; x=",x,"; lambda=",l,"; chi=",c,"; psi=",p,"\n", sep="")
++                 stop ("NA or NaN expected")
++         }
++ }}}}
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=1
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=1
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=1, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=nan, chi=inf, psi=inf
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=1
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=1, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=nan, psi=inf
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=1
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=1
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=nan
+Warning in dgig(x, l, c, p) : NaNs produced
+Warning in dgig(x, l, c, p) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=inf
+Warning in dgig(x, l, c, p, TRUE) : NaNs produced
+Warning in dgig(x, l, c, p, TRUE) :
+  invalid parameters for GIG distribution: lambda=inf, chi=inf, psi=inf
+> 
+> if (! (is.nan(dgig(1, -1,-1, 1)) &&
++        is.nan(dgig(1, -1, 0, 1)) &&
++        is.nan(dgig(1, -1, 1,-1)) &&
++        is.nan(dgig(1,  0,-1, 1)) &&
++        is.nan(dgig(1,  0, 1, 0)) &&
++        is.nan(dgig(1,  0, 0, 1)) &&
++        is.nan(dgig(1,  0, 1,-1)) &&
++        is.nan(dgig(1,  1,-1, 1)) &&
++        is.nan(dgig(1,  1, 1, 0)) &&
++        is.nan(dgig(1,  1, 1,-1)) ) ) {
++         stop ("NA or NaN expected")
++ }
+Warning in dgig(1, -1, -1, 1) : NaNs produced
+Warning in dgig(1, -1, -1, 1) :
+  invalid parameters for GIG distribution: lambda=-1, chi=-1, psi=1
+Warning in dgig(1, -1, 0, 1) : NaNs produced
+Warning in dgig(1, -1, 0, 1) :
+  invalid parameters for GIG distribution: lambda=-1, chi=0, psi=1
+Warning in dgig(1, -1, 1, -1) : NaNs produced
+Warning in dgig(1, -1, 1, -1) :
+  invalid parameters for GIG distribution: lambda=-1, chi=1, psi=-1
+Warning in dgig(1, 0, -1, 1) : NaNs produced
+Warning in dgig(1, 0, -1, 1) :
+  invalid parameters for GIG distribution: lambda=0, chi=-1, psi=1
+Warning in dgig(1, 0, 1, 0) : NaNs produced
+Warning in dgig(1, 0, 1, 0) :
+  invalid parameters for GIG distribution: lambda=0, chi=1, psi=0
+Warning in dgig(1, 0, 0, 1) : NaNs produced
+Warning in dgig(1, 0, 0, 1) :
+  invalid parameters for GIG distribution: lambda=0, chi=0, psi=1
+Warning in dgig(1, 0, 1, -1) : NaNs produced
+Warning in dgig(1, 0, 1, -1) :
+  invalid parameters for GIG distribution: lambda=0, chi=1, psi=-1
+Warning in dgig(1, 1, -1, 1) : NaNs produced
+Warning in dgig(1, 1, -1, 1) :
+  invalid parameters for GIG distribution: lambda=1, chi=-1, psi=1
+Warning in dgig(1, 1, 1, 0) : NaNs produced
+Warning in dgig(1, 1, 1, 0) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=0
+Warning in dgig(1, 1, 1, -1) : NaNs produced
+Warning in dgig(1, 1, 1, -1) :
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=-1
+> 
+> ## --- verify finite (non-NaN, non-Inf) results: evaluate at mode ------------
+> 
+> lambda <- c(-100, -10, -1, -0.1, 0, 0.1, 1, 10, 100)
+> chi <- c(0, 0.01, 0.1, 1, 10, 100)
+> psi <- c(0, 0.01, 0.1, 1, 10, 100)
+> 
+> for (l in lambda) { for (c in chi) { for (p in psi) {
++         if (!check.params(l,c,p)) next
++         m <- gig.mode(l,c,p)
++         if (m==0.0) m <- 1
++         f <- signif(dgig(m,l,c,p),5)
++         lf <- signif(dgig(m,l,c,p,TRUE),5)
++         cat ("f=",f,"; logf=",lf,"\t",
++              "; lambda=",l,"; chi=",c,"; psi=",p,";mode=",m,"\n", sep="")
++         if (! isTRUE(is.finite(f)) || ! isTRUE(is.finite(lf)))
++                 stop ("result not finite")
++ }}}
+f=80120; logf=11.291	; lambda=-100; chi=0.01; psi=0;mode=4.950495e-05
+f=80120; logf=11.291	; lambda=-100; chi=0.01; psi=0.01;mode=4.950495e-05
+f=80120; logf=11.291	; lambda=-100; chi=0.01; psi=0.1;mode=4.950495e-05
+f=80120; logf=11.291	; lambda=-100; chi=0.01; psi=1;mode=4.950494e-05
+f=80121; logf=11.291	; lambda=-100; chi=0.01; psi=10;mode=4.950483e-05
+f=80124; logf=11.291	; lambda=-100; chi=0.01; psi=100;mode=4.950374e-05
+f=8012; logf=8.9887	; lambda=-100; chi=0.1; psi=0;mode=0.0004950495
+f=8012; logf=8.9887	; lambda=-100; chi=0.1; psi=0.01;mode=0.0004950495
+f=8012; logf=8.9887	; lambda=-100; chi=0.1; psi=0.1;mode=0.0004950494
+f=8012.1; logf=8.9887	; lambda=-100; chi=0.1; psi=1;mode=0.0004950483
+f=8012.4; logf=8.9887	; lambda=-100; chi=0.1; psi=10;mode=0.0004950374
+f=8016; logf=8.9892	; lambda=-100; chi=0.1; psi=100;mode=0.0004949282
+f=801.2; logf=6.6861	; lambda=-100; chi=1; psi=0;mode=0.004950495
+f=801.2; logf=6.6861	; lambda=-100; chi=1; psi=0.01;mode=0.004950494
+f=801.21; logf=6.6861	; lambda=-100; chi=1; psi=0.1;mode=0.004950483
+f=801.24; logf=6.6862	; lambda=-100; chi=1; psi=1;mode=0.004950374
+f=801.6; logf=6.6866	; lambda=-100; chi=1; psi=10;mode=0.004949282
+f=805.2; logf=6.6911	; lambda=-100; chi=1; psi=100;mode=0.004938422
+f=80.12; logf=4.3835	; lambda=-100; chi=10; psi=0;mode=0.04950495
+f=80.121; logf=4.3835	; lambda=-100; chi=10; psi=0.01;mode=0.04950483
+f=80.124; logf=4.3836	; lambda=-100; chi=10; psi=0.1;mode=0.04950374
+f=80.16; logf=4.384	; lambda=-100; chi=10; psi=1;mode=0.04949282
+f=80.52; logf=4.3885	; lambda=-100; chi=10; psi=10;mode=0.04938422
+f=84.054; logf=4.4315	; lambda=-100; chi=10; psi=100;mode=0.04834777
+f=8.012; logf=2.0809	; lambda=-100; chi=100; psi=0;mode=0.4950495
+f=8.0124; logf=2.081	; lambda=-100; chi=100; psi=0.01;mode=0.4950374
+f=8.016; logf=2.0814	; lambda=-100; chi=100; psi=0.1;mode=0.4949282
+f=8.052; logf=2.0859	; lambda=-100; chi=100; psi=1;mode=0.4938422
+f=8.4054; logf=2.1289	; lambda=-100; chi=100; psi=10;mode=0.4834777
+f=11.496; logf=2.442	; lambda=-100; chi=100; psi=100;mode=0.4113022
+f=2626.3; logf=7.8733	; lambda=-10; chi=0.01; psi=0;mode=0.0004545455
+f=2626.3; logf=7.8733	; lambda=-10; chi=0.01; psi=0.01;mode=0.0004545454
+f=2626.3; logf=7.8733	; lambda=-10; chi=0.01; psi=0.1;mode=0.0004545445
+f=2626.4; logf=7.8734	; lambda=-10; chi=0.01; psi=1;mode=0.0004545361
+f=2627.6; logf=7.8738	; lambda=-10; chi=0.01; psi=10;mode=0.0004544516
+f=2639.6; logf=7.8784	; lambda=-10; chi=0.01; psi=100;mode=0.0004536102
+f=262.63; logf=5.5708	; lambda=-10; chi=0.1; psi=0;mode=0.004545455
+f=262.63; logf=5.5708	; lambda=-10; chi=0.1; psi=0.01;mode=0.004545445
+f=262.64; logf=5.5708	; lambda=-10; chi=0.1; psi=0.1;mode=0.004545361
+f=262.76; logf=5.5713	; lambda=-10; chi=0.1; psi=1;mode=0.004544516
+f=263.96; logf=5.5758	; lambda=-10; chi=0.1; psi=10;mode=0.004536102
+f=275.6; logf=5.619	; lambda=-10; chi=0.1; psi=100;mode=0.004455231
+f=26.263; logf=3.2682	; lambda=-10; chi=1; psi=0;mode=0.04545455
+f=26.264; logf=3.2682	; lambda=-10; chi=1; psi=0.01;mode=0.04545361
+f=26.276; logf=3.2687	; lambda=-10; chi=1; psi=0.1;mode=0.04544516
+f=26.396; logf=3.2732	; lambda=-10; chi=1; psi=1;mode=0.04536102
+f=27.56; logf=3.3164	; lambda=-10; chi=1; psi=10;mode=0.04455231
+f=37.565; logf=3.6261	; lambda=-10; chi=1; psi=100;mode=0.03866069
+f=2.6263; logf=0.96558	; lambda=-10; chi=10; psi=0;mode=0.4545455
+f=2.6276; logf=0.96609	; lambda=-10; chi=10; psi=0.01;mode=0.4544516
+f=2.6396; logf=0.97061	; lambda=-10; chi=10; psi=0.1;mode=0.4536102
+f=2.756; logf=1.0138	; lambda=-10; chi=10; psi=1;mode=0.4455231
+f=3.7565; logf=1.3235	; lambda=-10; chi=10; psi=10;mode=0.3866069
+f=10.1; logf=2.3125	; lambda=-10; chi=10; psi=100;mode=0.2248134
+f=0.26263; logf=-1.337	; lambda=-10; chi=100; psi=0;mode=4.545455
+f=0.26396; logf=-1.332	; lambda=-10; chi=100; psi=0.01;mode=4.536102
+f=0.2756; logf=-1.2888	; lambda=-10; chi=100; psi=0.1;mode=4.455231
+f=0.37565; logf=-0.9791	; lambda=-10; chi=100; psi=1;mode=3.866069
+f=1.01; logf=0.0099154	; lambda=-10; chi=100; psi=10;mode=2.248134
+f=4.4467; logf=1.4922	; lambda=-10; chi=100; psi=100;mode=0.8960318
+f=108.27; logf=4.6846	; lambda=-1; chi=0.01; psi=0;mode=0.0025
+f=108.3; logf=4.6849	; lambda=-1; chi=0.01; psi=0.01;mode=0.002499984
+f=108.48; logf=4.6865	; lambda=-1; chi=0.01; psi=0.1;mode=0.002499844
+f=109.74; logf=4.6981	; lambda=-1; chi=0.01; psi=1;mode=0.002498439
+f=117.5; logf=4.7664	; lambda=-1; chi=0.01; psi=10;mode=0.002484567
+f=159.31; logf=5.0709	; lambda=-1; chi=0.01; psi=100;mode=0.00236068
+f=10.827; logf=2.382	; lambda=-1; chi=0.1; psi=0;mode=0.025
+f=10.848; logf=2.3839	; lambda=-1; chi=0.1; psi=0.01;mode=0.02499844
+f=10.974; logf=2.3955	; lambda=-1; chi=0.1; psi=0.1;mode=0.02498439
+f=11.75; logf=2.4638	; lambda=-1; chi=0.1; psi=1;mode=0.02484567
+f=15.931; logf=2.7683	; lambda=-1; chi=0.1; psi=10;mode=0.0236068
+f=37.356; logf=3.6205	; lambda=-1; chi=0.1; psi=100;mode=0.01741657
+f=1.0827; logf=0.079442	; lambda=-1; chi=1; psi=0;mode=0.25
+f=1.0974; logf=0.092915	; lambda=-1; chi=1; psi=0.01;mode=0.2498439
+f=1.175; logf=0.16123	; lambda=-1; chi=1; psi=0.1;mode=0.2484567
+f=1.5931; logf=0.46571	; lambda=-1; chi=1; psi=1;mode=0.236068
+f=3.7356; logf=1.3179	; lambda=-1; chi=1; psi=10;mode=0.1741657
+f=14.858; logf=2.6985	; lambda=-1; chi=1; psi=100;mode=0.08198039
+f=0.10827; logf=-2.2231	; lambda=-1; chi=10; psi=0;mode=2.5
+f=0.1175; logf=-2.1414	; lambda=-1; chi=10; psi=0.01;mode=2.484567
+f=0.15931; logf=-1.8369	; lambda=-1; chi=10; psi=0.1;mode=2.36068
+f=0.37356; logf=-0.98468	; lambda=-1; chi=10; psi=1;mode=1.741657
+f=1.4858; logf=0.39592	; lambda=-1; chi=10; psi=10;mode=0.8198039
+f=7.4696; logf=2.0108	; lambda=-1; chi=10; psi=100;mode=0.2968596
+f=0.010827; logf=-4.5257	; lambda=-1; chi=100; psi=0;mode=25
+f=0.015931; logf=-4.1395	; lambda=-1; chi=100; psi=0.01;mode=23.6068
+f=0.037356; logf=-3.2873	; lambda=-1; chi=100; psi=0.1;mode=17.41657
+f=0.14858; logf=-1.9067	; lambda=-1; chi=100; psi=1;mode=8.198039
+f=0.74696; logf=-0.29174	; lambda=-1; chi=100; psi=10;mode=2.968596
+f=4.0549; logf=1.3999	; lambda=-1; chi=100; psi=100;mode=0.9802
+f=7.7714; logf=2.0504	; lambda=-0.1; chi=0.01; psi=0;mode=0.004545455
+f=12.725; logf=2.5435	; lambda=-0.1; chi=0.01; psi=0.01;mode=0.004545361
+f=15.232; logf=2.7234	; lambda=-0.1; chi=0.01; psi=0.1;mode=0.004544516
+f=20.172; logf=3.0043	; lambda=-0.1; chi=0.01; psi=1;mode=0.004536102
+f=32.548; logf=3.4827	; lambda=-0.1; chi=0.01; psi=10;mode=0.004455231
+f=76.112; logf=4.3322	; lambda=-0.1; chi=0.01; psi=100;mode=0.003866069
+f=0.77714; logf=-0.25214	; lambda=-0.1; chi=0.1; psi=0;mode=0.04545455
+f=1.5232; logf=0.42084	; lambda=-0.1; chi=0.1; psi=0.01;mode=0.04544516
+f=2.0172; logf=0.7017	; lambda=-0.1; chi=0.1; psi=0.1;mode=0.04536102
+f=3.2548; logf=1.1801	; lambda=-0.1; chi=0.1; psi=1;mode=0.04455231
+f=7.6112; logf=2.0296	; lambda=-0.1; chi=0.1; psi=10;mode=0.03866069
+f=28.032; logf=3.3334	; lambda=-0.1; chi=0.1; psi=100;mode=0.02248134
+f=0.077714; logf=-2.5547	; lambda=-0.1; chi=1; psi=0;mode=0.4545455
+f=0.20172; logf=-1.6009	; lambda=-0.1; chi=1; psi=0.01;mode=0.4536102
+f=0.32548; logf=-1.1225	; lambda=-0.1; chi=1; psi=0.1;mode=0.4455231
+f=0.76112; logf=-0.27296	; lambda=-0.1; chi=1; psi=1;mode=0.3866069
+f=2.8032; logf=1.0308	; lambda=-0.1; chi=1; psi=10;mode=0.2248134
+f=13.556; logf=2.6068	; lambda=-0.1; chi=1; psi=100;mode=0.08960318
+f=0.0077714; logf=-4.8573	; lambda=-0.1; chi=10; psi=0;mode=4.545455
+f=0.032548; logf=-3.425	; lambda=-0.1; chi=10; psi=0.01;mode=4.455231
+f=0.076112; logf=-2.5755	; lambda=-0.1; chi=10; psi=0.1;mode=3.866069
+f=0.28032; logf=-1.2718	; lambda=-0.1; chi=10; psi=1;mode=2.248134
+f=1.3556; logf=0.30425	; lambda=-0.1; chi=10; psi=10;mode=0.8960318
+f=7.2584; logf=1.9822	; lambda=-0.1; chi=10; psi=100;mode=0.305419
+f=0.00077714; logf=-7.1599	; lambda=-0.1; chi=100; psi=0;mode=45.45455
+f=0.0076112; logf=-4.8781	; lambda=-0.1; chi=100; psi=0.01;mode=38.66069
+f=0.028032; logf=-3.5744	; lambda=-0.1; chi=100; psi=0.1;mode=22.48134
+f=0.13556; logf=-1.9983	; lambda=-0.1; chi=100; psi=1;mode=8.960318
+f=0.72584; logf=-0.32043	; lambda=-0.1; chi=100; psi=10;mode=3.05419
+f=4.0184; logf=1.3909	; lambda=-0.1; chi=100; psi=100;mode=0.9890605
+f=7.7918; logf=2.0531	; lambda=0; chi=0.01; psi=0.01;mode=0.004999875
+f=10.299; logf=2.3321	; lambda=0; chi=0.01; psi=0.1;mode=0.004998751
+f=15.12; logf=2.716	; lambda=0; chi=0.01; psi=1;mode=0.004987562
+f=27.101; logf=3.2996	; lambda=0; chi=0.01; psi=10;mode=0.004880885
+f=69.703; logf=4.2442	; lambda=0; chi=0.01; psi=100;mode=0.004142136
+f=1.0299; logf=0.029503	; lambda=0; chi=0.1; psi=0.01;mode=0.04998751
+f=1.512; logf=0.4134	; lambda=0; chi=0.1; psi=0.1;mode=0.04987562
+f=2.7101; logf=0.99697	; lambda=0; chi=0.1; psi=1;mode=0.04880885
+f=6.9703; logf=1.9417	; lambda=0; chi=0.1; psi=10;mode=0.04142136
+f=27.17; logf=3.3021	; lambda=0; chi=0.1; psi=100;mode=0.02316625
+f=0.1512; logf=-1.8892	; lambda=0; chi=1; psi=0.01;mode=0.4987562
+f=0.27101; logf=-1.3056	; lambda=0; chi=1; psi=0.1;mode=0.4880885
+f=0.69703; logf=-0.36092	; lambda=0; chi=1; psi=1;mode=0.4142136
+f=2.717; logf=0.99954	; lambda=0; chi=1; psi=10;mode=0.2316625
+f=13.421; logf=2.5968	; lambda=0; chi=1; psi=100;mode=0.09049876
+f=0.027101; logf=-3.6082	; lambda=0; chi=10; psi=0.01;mode=4.880885
+f=0.069703; logf=-2.6635	; lambda=0; chi=10; psi=0.1;mode=4.142136
+f=0.2717; logf=-1.303	; lambda=0; chi=10; psi=1;mode=2.316625
+f=1.3421; logf=0.29424	; lambda=0; chi=10; psi=10;mode=0.9049876
+f=7.2355; logf=1.979	; lambda=0; chi=10; psi=100;mode=0.3063858
+f=0.0069703; logf=-4.9661	; lambda=0; chi=100; psi=0.01;mode=41.42136
+f=0.02717; logf=-3.6056	; lambda=0; chi=100; psi=0.1;mode=23.16625
+f=0.13421; logf=-2.0083	; lambda=0; chi=100; psi=1;mode=9.049876
+f=0.72355; logf=-0.32359	; lambda=0; chi=100; psi=10;mode=3.063858
+f=4.0144; logf=1.3899	; lambda=0; chi=100; psi=100;mode=0.99005
+f=0.061572; logf=-2.7875	; lambda=0.1; chi=0; psi=0.01;mode=1
+f=0.074104; logf=-2.6023	; lambda=0.1; chi=0; psi=0.1;mode=1
+f=0.059485; logf=-2.822	; lambda=0.1; chi=0; psi=1;mode=1
+f=0.00083192; logf=-7.0918	; lambda=0.1; chi=0; psi=10;mode=1
+f=2.998e-23; logf=-51.862	; lambda=0.1; chi=0; psi=100;mode=1
+f=4.4114; logf=1.4842	; lambda=0.1; chi=0.01; psi=0.01;mode=0.005555384
+f=6.6479; logf=1.8943	; lambda=0.1; chi=0.01; psi=0.1;mode=0.005553842
+f=11.078; logf=2.405	; lambda=0.1; chi=0.01; psi=1;mode=0.005538514
+f=22.405; logf=3.1093	; lambda=0.1; chi=0.01; psi=10;mode=0.00539392
+f=63.819; logf=4.1561	; lambda=0.1; chi=0.01; psi=100;mode=0.004453624
+f=0.66479; logf=-0.40828	; lambda=0.1; chi=0.1; psi=0.01;mode=0.05553842
+f=1.1078; logf=0.10239	; lambda=0.1; chi=0.1; psi=0.1;mode=0.05538514
+f=2.2405; logf=0.80671	; lambda=0.1; chi=0.1; psi=1;mode=0.0539392
+f=6.3819; logf=1.8535	; lambda=0.1; chi=0.1; psi=10;mode=0.04453624
+f=26.341; logf=3.2711	; lambda=0.1; chi=0.1; psi=100;mode=0.02387856
+f=0.11078; logf=-2.2002	; lambda=0.1; chi=1; psi=0.01;mode=0.5538514
+f=0.22405; logf=-1.4959	; lambda=0.1; chi=1; psi=0.1;mode=0.539392
+f=0.63819; logf=-0.44912	; lambda=0.1; chi=1; psi=1;mode=0.4453624
+f=2.6341; logf=0.96854	; lambda=0.1; chi=1; psi=10;mode=0.2387856
+f=13.288; logf=2.5869	; lambda=0.1; chi=1; psi=100;mode=0.09140418
+f=0.022405; logf=-3.7985	; lambda=0.1; chi=10; psi=0.01;mode=5.39392
+f=0.063819; logf=-2.7517	; lambda=0.1; chi=10; psi=0.1;mode=4.453624
+f=0.26341; logf=-1.334	; lambda=0.1; chi=10; psi=1;mode=2.387856
+f=1.3288; logf=0.28428	; lambda=0.1; chi=10; psi=10;mode=0.9140418
+f=7.2126; logf=1.9758	; lambda=0.1; chi=10; psi=100;mode=0.3073558
+f=0.0063819; logf=-5.0543	; lambda=0.1; chi=100; psi=0.01;mode=44.53624
+f=0.026341; logf=-3.6366	; lambda=0.1; chi=100; psi=0.1;mode=23.87856
+f=0.13288; logf=-2.0183	; lambda=0.1; chi=100; psi=1;mode=9.140418
+f=0.72126; logf=-0.32675	; lambda=0.1; chi=100; psi=10;mode=3.073558
+f=4.0104; logf=1.3889	; lambda=0.1; chi=100; psi=100;mode=0.9910405
+f=0.0049751; logf=-5.3033	; lambda=1; chi=0; psi=0.01;mode=1
+f=0.047561; logf=-3.0457	; lambda=1; chi=0; psi=0.1;mode=1
+f=0.30327; logf=-1.1931	; lambda=1; chi=0; psi=1;mode=1
+f=0.03369; logf=-3.3906	; lambda=1; chi=0; psi=10;mode=1
+f=9.6437e-21; logf=-46.088	; lambda=1; chi=0; psi=100;mode=1
+f=0.0049515; logf=-5.3081	; lambda=1; chi=0.01; psi=0.01;mode=1
+f=0.048542; logf=-3.0253	; lambda=1; chi=0.01; psi=0.1;mode=0.3162278
+f=0.45913; logf=-0.77842	; lambda=1; chi=0.01; psi=1;mode=0.1
+f=4.0047; logf=1.3875	; lambda=1; chi=0.01; psi=10;mode=0.03162278
+f=30.559; logf=3.4197	; lambda=1; chi=0.01; psi=100;mode=0.01
+f=0.0048542; logf=-5.3279	; lambda=1; chi=0.1; psi=0.01;mode=3.162278
+f=0.045913; logf=-3.081	; lambda=1; chi=0.1; psi=0.1;mode=1
+f=0.40047; logf=-0.91513	; lambda=1; chi=0.1; psi=1;mode=0.3162278
+f=3.0559; logf=1.1171	; lambda=1; chi=0.1; psi=10;mode=0.1
+f=20.226; logf=3.007	; lambda=1; chi=0.1; psi=100;mode=0.03162278
+f=0.0045913; logf=-5.3836	; lambda=1; chi=1; psi=0.01;mode=10
+f=0.040047; logf=-3.2177	; lambda=1; chi=1; psi=0.1;mode=3.162278
+f=0.30559; logf=-1.1855	; lambda=1; chi=1; psi=1;mode=1
+f=2.0226; logf=0.70438	; lambda=1; chi=1; psi=10;mode=0.3162278
+f=12.172; logf=2.4992	; lambda=1; chi=1; psi=100;mode=0.1
+f=0.0040047; logf=-5.5203	; lambda=1; chi=10; psi=0.01;mode=31.62278
+f=0.030559; logf=-3.4881	; lambda=1; chi=10; psi=0.1;mode=10
+f=0.20226; logf=-1.5982	; lambda=1; chi=10; psi=1;mode=3.162278
+f=1.2172; logf=0.19658	; lambda=1; chi=10; psi=10;mode=1
+f=7.012; logf=1.9476	; lambda=1; chi=10; psi=100;mode=0.3162278
+f=0.0030559; logf=-5.7907	; lambda=1; chi=100; psi=0.01;mode=100
+f=0.020226; logf=-3.9008	; lambda=1; chi=100; psi=0.1;mode=31.62278
+f=0.12172; logf=-2.106	; lambda=1; chi=100; psi=1;mode=10
+f=0.7012; logf=-0.35497	; lambda=1; chi=100; psi=10;mode=3.162278
+f=3.9746; logf=1.3799	; lambda=1; chi=100; psi=100;mode=1
+f=0.00065878; logf=-7.3251	; lambda=10; chi=0; psi=0.01;mode=1800
+f=0.0065878; logf=-5.0225	; lambda=10; chi=0; psi=0.1;mode=180
+f=0.065878; logf=-2.72	; lambda=10; chi=0; psi=1;mode=18
+f=0.65878; logf=-0.41737	; lambda=10; chi=0; psi=10;mode=1.8
+f=6.5878; logf=1.8852	; lambda=10; chi=0; psi=100;mode=0.18
+f=0.00065878; logf=-7.3251	; lambda=10; chi=0.01; psi=0.01;mode=1800.001
+f=0.0065878; logf=-5.0225	; lambda=10; chi=0.01; psi=0.1;mode=180.0006
+f=0.065878; logf=-2.72	; lambda=10; chi=0.01; psi=1;mode=18.00056
+f=0.65878; logf=-0.41737	; lambda=10; chi=0.01; psi=10;mode=1.800555
+f=6.5877; logf=1.8852	; lambda=10; chi=0.01; psi=100;mode=0.1805539
+f=0.00065878; logf=-7.3251	; lambda=10; chi=0.1; psi=0.01;mode=1800.006
+f=0.0065878; logf=-5.0225	; lambda=10; chi=0.1; psi=0.1;mode=180.0056
+f=0.065878; logf=-2.72	; lambda=10; chi=0.1; psi=1;mode=18.00555
+f=0.65877; logf=-0.41737	; lambda=10; chi=0.1; psi=10;mode=1.805539
+f=6.5847; logf=1.8847	; lambda=10; chi=0.1; psi=100;mode=0.1853939
+f=0.00065878; logf=-7.3251	; lambda=10; chi=1; psi=0.01;mode=1800.056
+f=0.0065878; logf=-5.0225	; lambda=10; chi=1; psi=0.1;mode=180.0555
+f=0.065877; logf=-2.72	; lambda=10; chi=1; psi=1;mode=18.05539
+f=0.65847; logf=-0.41784	; lambda=10; chi=1; psi=10;mode=1.853939
+f=6.4527; logf=1.8645	; lambda=10; chi=1; psi=100;mode=0.2245362
+f=0.00065878; logf=-7.3251	; lambda=10; chi=10; psi=0.01;mode=1800.555
+f=0.0065877; logf=-5.0225	; lambda=10; chi=10; psi=0.1;mode=180.5539
+f=0.065847; logf=-2.7204	; lambda=10; chi=10; psi=1;mode=18.53939
+f=0.64527; logf=-0.43809	; lambda=10; chi=10; psi=10;mode=2.245362
+f=5.4207; logf=1.6902	; lambda=10; chi=10; psi=100;mode=0.4187856
+f=0.00065877; logf=-7.3251	; lambda=10; chi=100; psi=0.01;mode=1805.539
+f=0.0065847; logf=-5.023	; lambda=10; chi=100; psi=0.1;mode=185.3939
+f=0.064527; logf=-2.7407	; lambda=10; chi=100; psi=1;mode=22.45362
+f=0.54207; logf=-0.61236	; lambda=10; chi=100; psi=10;mode=4.187856
+f=3.6419; logf=1.2925	; lambda=10; chi=100; psi=100;mode=1.094042
+f=0.00020031; logf=-8.5157	; lambda=100; chi=0; psi=0.01;mode=19800
+f=0.0020031; logf=-6.2131	; lambda=100; chi=0; psi=0.1;mode=1980
+f=0.020031; logf=-3.9105	; lambda=100; chi=0; psi=1;mode=198
+f=0.20031; logf=-1.6079	; lambda=100; chi=0; psi=10;mode=19.8
+f=2.0031; logf=0.69468	; lambda=100; chi=0; psi=100;mode=1.98
+f=0.00020031; logf=-8.5157	; lambda=100; chi=0.01; psi=0.01;mode=19800
+f=0.0020031; logf=-6.2131	; lambda=100; chi=0.01; psi=0.1;mode=1980
+f=0.020031; logf=-3.9105	; lambda=100; chi=0.01; psi=1;mode=198.0001
+f=0.20031; logf=-1.6079	; lambda=100; chi=0.01; psi=10;mode=19.80005
+f=2.0031; logf=0.69468	; lambda=100; chi=0.01; psi=100;mode=1.980051
+f=0.00020031; logf=-8.5157	; lambda=100; chi=0.1; psi=0.01;mode=19800
+f=0.0020031; logf=-6.2131	; lambda=100; chi=0.1; psi=0.1;mode=1980.001
+f=0.020031; logf=-3.9105	; lambda=100; chi=0.1; psi=1;mode=198.0005
+f=0.20031; logf=-1.6079	; lambda=100; chi=0.1; psi=10;mode=19.80051
+f=2.0031; logf=0.69468	; lambda=100; chi=0.1; psi=100;mode=1.980505
+f=0.00020031; logf=-8.5157	; lambda=100; chi=1; psi=0.01;mode=19800.01
+f=0.0020031; logf=-6.2131	; lambda=100; chi=1; psi=0.1;mode=1980.005
+f=0.020031; logf=-3.9105	; lambda=100; chi=1; psi=1;mode=198.0051
+f=0.20031; logf=-1.6079	; lambda=100; chi=1; psi=10;mode=19.80505
+f=2.0031; logf=0.69468	; lambda=100; chi=1; psi=100;mode=1.985038
+f=0.00020031; logf=-8.5157	; lambda=100; chi=10; psi=0.01;mode=19800.05
+f=0.0020031; logf=-6.2131	; lambda=100; chi=10; psi=0.1;mode=1980.051
+f=0.020031; logf=-3.9105	; lambda=100; chi=10; psi=1;mode=198.0505
+f=0.20031; logf=-1.6079	; lambda=100; chi=10; psi=10;mode=19.85038
+f=2.0025; logf=0.69439	; lambda=100; chi=10; psi=100;mode=2.029279
+f=0.00020031; logf=-8.5157	; lambda=100; chi=100; psi=0.01;mode=19800.51
+f=0.0020031; logf=-6.2131	; lambda=100; chi=100; psi=0.1;mode=1980.505
+f=0.020031; logf=-3.9105	; lambda=100; chi=100; psi=1;mode=198.5038
+f=0.20025; logf=-1.6082	; lambda=100; chi=100; psi=10;mode=20.29279
+f=1.9724; logf=0.67925	; lambda=100; chi=100; psi=100;mode=2.39716
+> 
+> ## --- verify results for special values -------------------------------------
+> 
+> xvals <- c(-Inf,-1,0,Inf)
+> lambda <- c(-100, -10, -1, -0.1, 0, 0.1, 1, 10, 100)
+> chi <- c(0, 0.01, 0.1, 1, 10, 100)
+> psi <- c(0, 0.01, 0.1, 1, 10, 100)
+> 
+> for (x in xvals) { for (l in lambda) { for (c in chi) { for (p in psi) {
++         if (!check.params(l,c,p)) next
++         f <- dgig(x,l,c,p)
++         lf <- dgig(x,l,c,p,TRUE)
++         if (! isTRUE(all(c(f,lf) == c(0,-Inf))) ) {
++                 cat ("f=",f,"; logf=",lf,"\t",
++                      "; x=",x,"; lambda=",l,"; chi=",c,"; psi=",p,"\n", sep="")
++                 stop ("0 and -Inf expected")
++         }
++ }}}}
+> 
+> ## --- verify normalization constant: integrate density ----------------------
+> 
+> lambda <- c(-10, -1, -0.1, 0, 0.1, 1, 10)
+> chi <- c(0.01, 0.1, 1, 10, 100)
+> psi <- c(0.01, 0.1, 1, 10, 100)
+> 
+> for (l in lambda) { for (c in chi) { for (p in psi) {
++         if (!check.params(l,c,p)) next
++         if ( (c < 0.009 && p < 0.05) || (c < 0.05 && p < 0.009) ) {
++                 ## integrate() does not work for these parameters 
++                 next
++         }
++         a <- integrate(dgig,0,Inf,lambda=l,chi=c,psi=p,rel.tol=1.e-10)
++         if (all.equal(a$value,1, tolerance=1e-4) != TRUE) {
++                 cat("lambda =",l,"; chi =",c,"; psi =",p,"\n\t")
++                 print(a)
++                 stop("normalization constant might be wrong")
++         }
++ }}}
+> 
+> ## special cases
+> lambda <- c(-10, -1, -0.5, 0, 0.5,1,10)
+> chi <- c(0, 0.1, 1, 10, 100)
+> psi <- c(0, 0.1, 1, 10, 100)
+> 
+> for (l in lambda) { for (c in chi) { for (p in psi) {
++         if (!check.params(l,c,p)) next
++         if ( (c < 0.009 && p < 0.05) || (c < 0.05 && p < 0.009) ) {
++                 ## integrate does not work for these parameters 
++                 next
++         }
++         a <- integrate(dgig,0,Inf,lambda=l,chi=c,psi=p,rel.tol=1.e-10)
++         if (all.equal(a$value,1, tolerance=1e-4) != TRUE) {
++                 cat("lambda =",l,"; chi =",c,"; psi =",p,"\n\t")
++                 print(a)
++                 stop("normalization constant might be wrong")
++         }
++ }}}
+> 
+> 
+> ##############################################################################
+> ##
+> ## rgig()
+> ##
+> ##############################################################################
+> 
+> ## --- check handling of invalid parameters ----------------------------------
+> 
+> stopifnot (iserror(rgig(0, 1,1,1)), TRUE)
+Error in rgig(0, 1, 1, 1) : sample size 'n' must be positive integer.
+> 
+> stopifnot (iserror(rgig(1,-1,-1, 1)), TRUE)
+Error in rgig(1, -1, -1, 1) : 
+  invalid parameters for GIG distribution: lambda=-1, chi=-1, psi=1
+> stopifnot (iserror(rgig(1,-1, 0, 1)), TRUE)
+Error in rgig(1, -1, 0, 1) : 
+  invalid parameters for GIG distribution: lambda=-1, chi=0, psi=1
+> stopifnot (iserror(rgig(1,-1, 1,-1)), TRUE)
+Error in rgig(1, -1, 1, -1) : 
+  invalid parameters for GIG distribution: lambda=-1, chi=1, psi=-1
+> stopifnot (iserror(rgig(1, 0,-1, 1)), TRUE)
+Error in rgig(1, 0, -1, 1) : 
+  invalid parameters for GIG distribution: lambda=0, chi=-1, psi=1
+> stopifnot (iserror(rgig(1, 0, 1, 0)), TRUE)
+Error in rgig(1, 0, 1, 0) : 
+  invalid parameters for GIG distribution: lambda=0, chi=1, psi=0
+> stopifnot (iserror(rgig(1, 0, 0, 1)), TRUE)
+Error in rgig(1, 0, 0, 1) : 
+  invalid parameters for GIG distribution: lambda=0, chi=0, psi=1
+> stopifnot (iserror(rgig(1, 0, 1,-1)), TRUE)
+Error in rgig(1, 0, 1, -1) : 
+  invalid parameters for GIG distribution: lambda=0, chi=1, psi=-1
+> stopifnot (iserror(rgig(1, 1,-1, 1)), TRUE)
+Error in rgig(1, 1, -1, 1) : 
+  invalid parameters for GIG distribution: lambda=1, chi=-1, psi=1
+> stopifnot (iserror(rgig(1, 1, 1, 0)), TRUE)
+Error in rgig(1, 1, 1, 0) : 
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=0
+> stopifnot (iserror(rgig(1, 1, 1,-1)), TRUE)
+Error in rgig(1, 1, 1, -1) : 
+  invalid parameters for GIG distribution: lambda=1, chi=1, psi=-1
+> 
+> ## --- just run generator ----------------------------------------------------
+> 
+> if(!interactive())
++     set.seed(123)
+> 
+> lambda <- c(-100, -10, -1, -0.1, 0, 0.1, 1, 10, 100)
+> chi <- c(0, 1e-12, 0.01, 0.1, 1, 10, 100)
+> psi <- c(0, 1e-12, 0.01, 0.1, 1, 10, 100)
+> 
+> for (l in lambda) { for (c in chi) { for (p in psi) {
++         if (!check.params(l,c,p)) next
++         x <- rgig(1,l,c,p)
++         cat ("x=",signif(x,5),";\tlambda=",l,"; chi=",c,"; psi=",p,"\n", sep="")
++         if (! isTRUE(is.finite(x))) {
++                 cat ("x=",x,";\tlambda=",l,"; chi=",c,"; psi=",p,"\n", sep="")
++                 stop ("result not finite")
++         }
++ }}}
+x=1.8798e+14;	lambda=-100; chi=1e-12; psi=0
+x=5.8782e-15;	lambda=-100; chi=1e-12; psi=1e-12
+x=4.4685e-15;	lambda=-100; chi=1e-12; psi=0.01
+x=5.0685e-15;	lambda=-100; chi=1e-12; psi=0.1
+x=5.0803e-15;	lambda=-100; chi=1e-12; psi=1
+x=4.3483e-15;	lambda=-100; chi=1e-12; psi=10
+x=4.7721e-15;	lambda=-100; chi=1e-12; psi=100
+x=25264;	lambda=-100; chi=0.01; psi=0
+x=4.704e-05;	lambda=-100; chi=0.01; psi=1e-12
+x=4.7187e-05;	lambda=-100; chi=0.01; psi=0.01
+x=4.5646e-05;	lambda=-100; chi=0.01; psi=0.1
+x=5.0488e-05;	lambda=-100; chi=0.01; psi=1
+x=5.8796e-05;	lambda=-100; chi=0.01; psi=10
+x=5.184e-05;	lambda=-100; chi=0.01; psi=100
+x=1923.7;	lambda=-100; chi=0.1; psi=0
+x=0.00055508;	lambda=-100; chi=0.1; psi=1e-12
+x=0.00052737;	lambda=-100; chi=0.1; psi=0.01
+x=0.00060707;	lambda=-100; chi=0.1; psi=0.1
+x=0.0004717;	lambda=-100; chi=0.1; psi=1
+x=0.00054891;	lambda=-100; chi=0.1; psi=10
+x=0.00042325;	lambda=-100; chi=0.1; psi=100
+x=207.6;	lambda=-100; chi=1; psi=0
+x=0.0053621;	lambda=-100; chi=1; psi=1e-12
+x=0.0044687;	lambda=-100; chi=1; psi=0.01
+x=0.0047161;	lambda=-100; chi=1; psi=0.1
+x=0.00449;	lambda=-100; chi=1; psi=1
+x=0.0046914;	lambda=-100; chi=1; psi=10
+x=0.0050417;	lambda=-100; chi=1; psi=100
+x=19.294;	lambda=-100; chi=10; psi=0
+x=0.046797;	lambda=-100; chi=10; psi=1e-12
+x=0.050874;	lambda=-100; chi=10; psi=0.01
+x=0.046384;	lambda=-100; chi=10; psi=0.1
+x=0.04602;	lambda=-100; chi=10; psi=1
+x=0.053794;	lambda=-100; chi=10; psi=10
+x=0.057177;	lambda=-100; chi=10; psi=100
+x=1.9958;	lambda=-100; chi=100; psi=0
+x=0.53202;	lambda=-100; chi=100; psi=1e-12
+x=0.43132;	lambda=-100; chi=100; psi=0.01
+x=0.47831;	lambda=-100; chi=100; psi=0.1
+x=0.45277;	lambda=-100; chi=100; psi=1
+x=0.54904;	lambda=-100; chi=100; psi=10
+x=0.37316;	lambda=-100; chi=100; psi=100
+x=1.7539e+13;	lambda=-10; chi=1e-12; psi=0
+x=7.9626e-14;	lambda=-10; chi=1e-12; psi=1e-12
+x=5.7343e-14;	lambda=-10; chi=1e-12; psi=0.01
+x=7.2658e-14;	lambda=-10; chi=1e-12; psi=0.1
+x=4.9261e-14;	lambda=-10; chi=1e-12; psi=1
+x=4.6423e-14;	lambda=-10; chi=1e-12; psi=10
+x=5.1131e-14;	lambda=-10; chi=1e-12; psi=100
+x=2511.1;	lambda=-10; chi=0.01; psi=0
+x=0.00065872;	lambda=-10; chi=0.01; psi=1e-12
+x=0.00064581;	lambda=-10; chi=0.01; psi=0.01
+x=0.00037175;	lambda=-10; chi=0.01; psi=0.1
+x=0.00060465;	lambda=-10; chi=0.01; psi=1
+x=0.0010324;	lambda=-10; chi=0.01; psi=10
+x=0.00039628;	lambda=-10; chi=0.01; psi=100
+x=181.53;	lambda=-10; chi=0.1; psi=0
+x=0.005917;	lambda=-10; chi=0.1; psi=1e-12
+x=0.0060243;	lambda=-10; chi=0.1; psi=0.01
+x=0.005111;	lambda=-10; chi=0.1; psi=0.1
+x=0.0077388;	lambda=-10; chi=0.1; psi=1
+x=0.0064675;	lambda=-10; chi=0.1; psi=10
+x=0.0063866;	lambda=-10; chi=0.1; psi=100
+x=23.312;	lambda=-10; chi=1; psi=0
+x=0.042602;	lambda=-10; chi=1; psi=1e-12
+x=0.051869;	lambda=-10; chi=1; psi=0.01
+x=0.050046;	lambda=-10; chi=1; psi=0.1
+x=0.06084;	lambda=-10; chi=1; psi=1
+x=0.063388;	lambda=-10; chi=1; psi=10
+x=0.040537;	lambda=-10; chi=1; psi=100
+x=2.0016;	lambda=-10; chi=10; psi=0
+x=0.59059;	lambda=-10; chi=10; psi=1e-12
+x=0.49503;	lambda=-10; chi=10; psi=0.01
+x=0.52129;	lambda=-10; chi=10; psi=0.1
+x=0.28793;	lambda=-10; chi=10; psi=1
+x=0.34495;	lambda=-10; chi=10; psi=10
+x=0.18954;	lambda=-10; chi=10; psi=100
+x=0.19233;	lambda=-10; chi=100; psi=0
+x=3.2155;	lambda=-10; chi=100; psi=1e-12
+x=10.144;	lambda=-10; chi=100; psi=0.01
+x=7.6194;	lambda=-10; chi=100; psi=0.1
+x=7.1706;	lambda=-10; chi=100; psi=1
+x=1.9574;	lambda=-10; chi=100; psi=10
+x=0.92506;	lambda=-10; chi=100; psi=100
+x=3.9527e+12;	lambda=-1; chi=1e-12; psi=0
+x=8.2164e-13;	lambda=-1; chi=1e-12; psi=1e-12
+x=8.4697e-13;	lambda=-1; chi=1e-12; psi=0.01
+x=8.5986e-13;	lambda=-1; chi=1e-12; psi=0.1
+x=3.0314e-12;	lambda=-1; chi=1e-12; psi=1
+x=3.3836e-13;	lambda=-1; chi=1e-12; psi=10
+x=4.6253e-13;	lambda=-1; chi=1e-12; psi=100
+x=168;	lambda=-1; chi=0.01; psi=0
+x=0.0033479;	lambda=-1; chi=0.01; psi=1e-12
+x=0.0037231;	lambda=-1; chi=0.01; psi=0.01
+x=0.0023678;	lambda=-1; chi=0.01; psi=0.1
+x=0.017296;	lambda=-1; chi=0.01; psi=1
+x=0.01159;	lambda=-1; chi=0.01; psi=10
+x=0.0051073;	lambda=-1; chi=0.01; psi=100
+x=32.048;	lambda=-1; chi=0.1; psi=0
+x=0.039645;	lambda=-1; chi=0.1; psi=1e-12
+x=0.76503;	lambda=-1; chi=0.1; psi=0.01
+x=0.30344;	lambda=-1; chi=0.1; psi=0.1
+x=0.0093096;	lambda=-1; chi=0.1; psi=1
+x=0.051207;	lambda=-1; chi=0.1; psi=10
+x=0.060959;	lambda=-1; chi=0.1; psi=100
+x=0.21698;	lambda=-1; chi=1; psi=0
+x=2.3642;	lambda=-1; chi=1; psi=1e-12
+x=7.9364;	lambda=-1; chi=1; psi=0.01
+x=0.19749;	lambda=-1; chi=1; psi=0.1
+x=0.47418;	lambda=-1; chi=1; psi=1
+x=0.44547;	lambda=-1; chi=1; psi=10
+x=0.07695;	lambda=-1; chi=1; psi=100
+x=0.1525;	lambda=-1; chi=10; psi=0
+x=7.394;	lambda=-1; chi=10; psi=1e-12
+x=6.9632;	lambda=-1; chi=10; psi=0.01
+x=9.9105;	lambda=-1; chi=10; psi=0.1
+x=0.94265;	lambda=-1; chi=10; psi=1
+x=1.0247;	lambda=-1; chi=10; psi=10
+x=0.2205;	lambda=-1; chi=10; psi=100
+x=0.017079;	lambda=-1; chi=100; psi=0
+x=96.213;	lambda=-1; chi=100; psi=1e-12
+x=43.965;	lambda=-1; chi=100; psi=0.01
+x=11.634;	lambda=-1; chi=100; psi=0.1
+x=14.088;	lambda=-1; chi=100; psi=1
+x=3.6552;	lambda=-1; chi=100; psi=10
+x=1.0168;	lambda=-1; chi=100; psi=100
+x=223780000;	lambda=-0.1; chi=1e-12; psi=0
+x=4.5862e-13;	lambda=-0.1; chi=1e-12; psi=1e-12
+x=5.3712e-06;	lambda=-0.1; chi=1e-12; psi=0.01
+x=1.1863e-09;	lambda=-0.1; chi=1e-12; psi=0.1
+x=1.8997e-12;	lambda=-0.1; chi=1e-12; psi=1
+x=4.1717e-07;	lambda=-0.1; chi=1e-12; psi=10
+x=8.018e-09;	lambda=-0.1; chi=1e-12; psi=100
+x=25.165;	lambda=-0.1; chi=0.01; psi=0
+x=3.1473e+10;	lambda=-0.1; chi=0.01; psi=1e-12
+x=0.23561;	lambda=-0.1; chi=0.01; psi=0.01
+x=0.4198;	lambda=-0.1; chi=0.01; psi=0.1
+x=0.067642;	lambda=-0.1; chi=0.01; psi=1
+x=0.038787;	lambda=-0.1; chi=0.01; psi=10
+x=0.0044857;	lambda=-0.1; chi=0.01; psi=100
+x=11.678;	lambda=-0.1; chi=0.1; psi=0
+x=3928.4;	lambda=-0.1; chi=0.1; psi=1e-12
+x=6.5582;	lambda=-0.1; chi=0.1; psi=0.01
+x=0.09847;	lambda=-0.1; chi=0.1; psi=0.1
+x=0.29626;	lambda=-0.1; chi=0.1; psi=1
+x=0.10684;	lambda=-0.1; chi=0.1; psi=10
+x=0.052127;	lambda=-0.1; chi=0.1; psi=100
+x=0.011599;	lambda=-0.1; chi=1; psi=0
+x=548.16;	lambda=-0.1; chi=1; psi=1e-12
+x=109.53;	lambda=-0.1; chi=1; psi=0.01
+x=1.2215;	lambda=-0.1; chi=1; psi=0.1
+x=0.23694;	lambda=-0.1; chi=1; psi=1
+x=0.2352;	lambda=-0.1; chi=1; psi=10
+x=0.12375;	lambda=-0.1; chi=1; psi=100
+x=3.4102e-06;	lambda=-0.1; chi=10; psi=0
+x=196.95;	lambda=-0.1; chi=10; psi=1e-12
+x=12.69;	lambda=-0.1; chi=10; psi=0.01
+x=3.7853;	lambda=-0.1; chi=10; psi=0.1
+x=2.2381;	lambda=-0.1; chi=10; psi=1
+x=0.50362;	lambda=-0.1; chi=10; psi=10
+x=0.28161;	lambda=-0.1; chi=10; psi=100
+x=3.3936e-10;	lambda=-0.1; chi=100; psi=0
+x=4229;	lambda=-0.1; chi=100; psi=1e-12
+x=98.266;	lambda=-0.1; chi=100; psi=0.01
+x=78.511;	lambda=-0.1; chi=100; psi=0.1
+x=8.3683;	lambda=-0.1; chi=100; psi=1
+x=3.6636;	lambda=-0.1; chi=100; psi=10
+x=0.92552;	lambda=-0.1; chi=100; psi=100
+x=1600200;	lambda=0; chi=1e-12; psi=1e-12
+x=3.3434e-11;	lambda=0; chi=1e-12; psi=0.01
+x=4.9032e-07;	lambda=0; chi=1e-12; psi=0.1
+x=6.2091e-11;	lambda=0; chi=1e-12; psi=1
+x=7.4185e-10;	lambda=0; chi=1e-12; psi=10
+x=1.3549e-05;	lambda=0; chi=1e-12; psi=100
+x=4554300000;	lambda=0; chi=0.01; psi=1e-12
+x=40.812;	lambda=0; chi=0.01; psi=0.01
+x=3.4623;	lambda=0; chi=0.01; psi=0.1
+x=0.08048;	lambda=0; chi=0.01; psi=1
+x=0.10359;	lambda=0; chi=0.01; psi=10
+x=0.026447;	lambda=0; chi=0.01; psi=100
+x=143810000;	lambda=0; chi=0.1; psi=1e-12
+x=0.12875;	lambda=0; chi=0.1; psi=0.01
+x=3.6899;	lambda=0; chi=0.1; psi=0.1
+x=0.04848;	lambda=0; chi=0.1; psi=1
+x=0.22254;	lambda=0; chi=0.1; psi=10
+x=0.029077;	lambda=0; chi=0.1; psi=100
+x=5.0413;	lambda=0; chi=1; psi=1e-12
+x=1.4174;	lambda=0; chi=1; psi=0.01
+x=2.3226;	lambda=0; chi=1; psi=0.1
+x=0.53766;	lambda=0; chi=1; psi=1
+x=0.16095;	lambda=0; chi=1; psi=10
+x=0.16294;	lambda=0; chi=1; psi=100
+x=94713;	lambda=0; chi=10; psi=1e-12
+x=2.2778;	lambda=0; chi=10; psi=0.01
+x=3.2252;	lambda=0; chi=10; psi=0.1
+x=4.509;	lambda=0; chi=10; psi=1
+x=1.4193;	lambda=0; chi=10; psi=10
+x=0.37568;	lambda=0; chi=10; psi=100
+x=43667;	lambda=0; chi=100; psi=1e-12
+x=36.762;	lambda=0; chi=100; psi=0.01
+x=29.789;	lambda=0; chi=100; psi=0.1
+x=7.4166;	lambda=0; chi=100; psi=1
+x=3.8694;	lambda=0; chi=100; psi=10
+x=1.0214;	lambda=0; chi=100; psi=100
+x=5009600000;	lambda=0.1; chi=0; psi=1e-12
+x=3.4872e-16;	lambda=0.1; chi=0; psi=0.01
+x=3.1019e-06;	lambda=0.1; chi=0; psi=0.1
+x=0.040941;	lambda=0.1; chi=0; psi=1
+x=5.3222e-05;	lambda=0.1; chi=0; psi=10
+x=1.2521e-19;	lambda=0.1; chi=0; psi=100
+x=2374400000;	lambda=0.1; chi=1e-12; psi=1e-12
+x=0.0228;	lambda=0.1; chi=1e-12; psi=0.01
+x=1.5078e-06;	lambda=0.1; chi=1e-12; psi=0.1
+x=0.018816;	lambda=0.1; chi=1e-12; psi=1
+x=2.3662e-10;	lambda=0.1; chi=1e-12; psi=10
+x=2.1874e-09;	lambda=0.1; chi=1e-12; psi=100
+x=8.4363e+11;	lambda=0.1; chi=0.01; psi=1e-12
+x=0.85673;	lambda=0.1; chi=0.01; psi=0.01
+x=0.0057843;	lambda=0.1; chi=0.01; psi=0.1
+x=0.59164;	lambda=0.1; chi=0.01; psi=1
+x=0.069772;	lambda=0.1; chi=0.01; psi=10
+x=0.027144;	lambda=0.1; chi=0.01; psi=100
+x=304990000;	lambda=0.1; chi=0.1; psi=1e-12
+x=0.17238;	lambda=0.1; chi=0.1; psi=0.01
+x=0.048855;	lambda=0.1; chi=0.1; psi=0.1
+x=3.4108;	lambda=0.1; chi=0.1; psi=1
+x=0.14537;	lambda=0.1; chi=0.1; psi=10
+x=0.063399;	lambda=0.1; chi=0.1; psi=100
+x=61669000;	lambda=0.1; chi=1; psi=1e-12
+x=138.29;	lambda=0.1; chi=1; psi=0.01
+x=26.72;	lambda=0.1; chi=1; psi=0.1
+x=1.0028;	lambda=0.1; chi=1; psi=1
+x=0.29028;	lambda=0.1; chi=1; psi=10
+x=0.090021;	lambda=0.1; chi=1; psi=100
+x=3.9078e+10;	lambda=0.1; chi=10; psi=1e-12
+x=10.828;	lambda=0.1; chi=10; psi=0.01
+x=8.9138;	lambda=0.1; chi=10; psi=0.1
+x=5.7627;	lambda=0.1; chi=10; psi=1
+x=1.0396;	lambda=0.1; chi=10; psi=10
+x=0.23554;	lambda=0.1; chi=10; psi=100
+x=341870000;	lambda=0.1; chi=100; psi=1e-12
+x=330.82;	lambda=0.1; chi=100; psi=0.01
+x=18.119;	lambda=0.1; chi=100; psi=0.1
+x=17.122;	lambda=0.1; chi=100; psi=1
+x=2.726;	lambda=0.1; chi=100; psi=10
+x=1.017;	lambda=0.1; chi=100; psi=100
+x=1.6802e+11;	lambda=1; chi=0; psi=1e-12
+x=207.75;	lambda=1; chi=0; psi=0.01
+x=28.161;	lambda=1; chi=0; psi=0.1
+x=4.7594;	lambda=1; chi=0; psi=1
+x=0.10808;	lambda=1; chi=0; psi=10
+x=0.0092784;	lambda=1; chi=0; psi=100
+x=1.7313e+12;	lambda=1; chi=1e-12; psi=1e-12
+x=72.667;	lambda=1; chi=1e-12; psi=0.01
+x=51.988;	lambda=1; chi=1e-12; psi=0.1
+x=0.33062;	lambda=1; chi=1e-12; psi=1
+x=0.061959;	lambda=1; chi=1e-12; psi=10
+x=0.037929;	lambda=1; chi=1e-12; psi=100
+x=1.7014e+12;	lambda=1; chi=0.01; psi=1e-12
+x=299.52;	lambda=1; chi=0.01; psi=0.01
+x=10.166;	lambda=1; chi=0.01; psi=0.1
+x=1.2207;	lambda=1; chi=0.01; psi=1
+x=0.25663;	lambda=1; chi=0.01; psi=10
+x=0.0058837;	lambda=1; chi=0.01; psi=100
+x=8.0667e+10;	lambda=1; chi=0.1; psi=1e-12
+x=58.7;	lambda=1; chi=0.1; psi=0.01
+x=46.461;	lambda=1; chi=0.1; psi=0.1
+x=3.1843;	lambda=1; chi=0.1; psi=1
+x=0.15154;	lambda=1; chi=0.1; psi=10
+x=0.019606;	lambda=1; chi=0.1; psi=100
+x=5.0255e+12;	lambda=1; chi=1; psi=1e-12
+x=241.84;	lambda=1; chi=1; psi=0.01
+x=2.201;	lambda=1; chi=1; psi=0.1
+x=2.2627;	lambda=1; chi=1; psi=1
+x=0.24283;	lambda=1; chi=1; psi=10
+x=0.084907;	lambda=1; chi=1; psi=100
+x=1.2464e+12;	lambda=1; chi=10; psi=1e-12
+x=169.46;	lambda=1; chi=10; psi=0.01
+x=13.782;	lambda=1; chi=10; psi=0.1
+x=5.6679;	lambda=1; chi=10; psi=1
+x=0.76255;	lambda=1; chi=10; psi=10
+x=0.31157;	lambda=1; chi=10; psi=100
+x=4.5977e+12;	lambda=1; chi=100; psi=1e-12
+x=184.07;	lambda=1; chi=100; psi=0.01
+x=56.119;	lambda=1; chi=100; psi=0.1
+x=13.893;	lambda=1; chi=100; psi=1
+x=3.2254;	lambda=1; chi=100; psi=10
+x=0.9052;	lambda=1; chi=100; psi=100
+x=1.5586e+13;	lambda=10; chi=0; psi=1e-12
+x=1854.9;	lambda=10; chi=0; psi=0.01
+x=100.79;	lambda=10; chi=0; psi=0.1
+x=18.823;	lambda=10; chi=0; psi=1
+x=2.1766;	lambda=10; chi=0; psi=10
+x=0.22276;	lambda=10; chi=0; psi=100
+x=2.4204e+13;	lambda=10; chi=1e-12; psi=1e-12
+x=799.49;	lambda=10; chi=1e-12; psi=0.01
+x=127.65;	lambda=10; chi=1e-12; psi=0.1
+x=20.106;	lambda=10; chi=1e-12; psi=1
+x=1.6086;	lambda=10; chi=1e-12; psi=10
+x=0.09995;	lambda=10; chi=1e-12; psi=100
+x=2.5864e+13;	lambda=10; chi=0.01; psi=1e-12
+x=2266.4;	lambda=10; chi=0.01; psi=0.01
+x=202.14;	lambda=10; chi=0.01; psi=0.1
+x=26.453;	lambda=10; chi=0.01; psi=1
+x=2.3342;	lambda=10; chi=0.01; psi=10
+x=0.12326;	lambda=10; chi=0.01; psi=100
+x=1.6147e+13;	lambda=10; chi=0.1; psi=1e-12
+x=866;	lambda=10; chi=0.1; psi=0.01
+x=240.45;	lambda=10; chi=0.1; psi=0.1
+x=18.154;	lambda=10; chi=0.1; psi=1
+x=2.9507;	lambda=10; chi=0.1; psi=10
+x=0.12418;	lambda=10; chi=0.1; psi=100
+x=1.8778e+13;	lambda=10; chi=1; psi=1e-12
+x=795.37;	lambda=10; chi=1; psi=0.01
+x=116.8;	lambda=10; chi=1; psi=0.1
+x=27.355;	lambda=10; chi=1; psi=1
+x=1.5081;	lambda=10; chi=1; psi=10
+x=0.23705;	lambda=10; chi=1; psi=100
+x=2.1163e+13;	lambda=10; chi=10; psi=1e-12
+x=3833.6;	lambda=10; chi=10; psi=0.01
+x=257.47;	lambda=10; chi=10; psi=0.1
+x=14.708;	lambda=10; chi=10; psi=1
+x=3.5502;	lambda=10; chi=10; psi=10
+x=0.34739;	lambda=10; chi=10; psi=100
+x=1.4323e+13;	lambda=10; chi=100; psi=1e-12
+x=2325.5;	lambda=10; chi=100; psi=0.01
+x=201.31;	lambda=10; chi=100; psi=0.1
+x=13.02;	lambda=10; chi=100; psi=1
+x=4.3335;	lambda=10; chi=100; psi=10
+x=1.1271;	lambda=10; chi=100; psi=100
+x=1.9957e+14;	lambda=100; chi=0; psi=1e-12
+x=22580;	lambda=100; chi=0; psi=0.01
+x=1708.4;	lambda=100; chi=0; psi=0.1
+x=221.77;	lambda=100; chi=0; psi=1
+x=18.944;	lambda=100; chi=0; psi=10
+x=2.0058;	lambda=100; chi=0; psi=100
+x=1.9137e+14;	lambda=100; chi=1e-12; psi=1e-12
+x=21662;	lambda=100; chi=1e-12; psi=0.01
+x=2184.4;	lambda=100; chi=1e-12; psi=0.1
+x=217.51;	lambda=100; chi=1e-12; psi=1
+x=20.989;	lambda=100; chi=1e-12; psi=10
+x=1.8593;	lambda=100; chi=1e-12; psi=100
+x=2.0228e+14;	lambda=100; chi=0.01; psi=1e-12
+x=17736;	lambda=100; chi=0.01; psi=0.01
+x=1992.2;	lambda=100; chi=0.01; psi=0.1
+x=176.38;	lambda=100; chi=0.01; psi=1
+x=17.149;	lambda=100; chi=0.01; psi=10
+x=1.8693;	lambda=100; chi=0.01; psi=100
+x=1.8749e+14;	lambda=100; chi=0.1; psi=1e-12
+x=22375;	lambda=100; chi=0.1; psi=0.01
+x=1634;	lambda=100; chi=0.1; psi=0.1
+x=194.61;	lambda=100; chi=0.1; psi=1
+x=19.654;	lambda=100; chi=0.1; psi=10
+x=2.0385;	lambda=100; chi=0.1; psi=100
+x=1.8188e+14;	lambda=100; chi=1; psi=1e-12
+x=19809;	lambda=100; chi=1; psi=0.01
+x=1730;	lambda=100; chi=1; psi=0.1
+x=204.02;	lambda=100; chi=1; psi=1
+x=19.377;	lambda=100; chi=1; psi=10
+x=2.0725;	lambda=100; chi=1; psi=100
+x=2.0371e+14;	lambda=100; chi=10; psi=1e-12
+x=18109;	lambda=100; chi=10; psi=0.01
+x=1829.2;	lambda=100; chi=10; psi=0.1
+x=193.45;	lambda=100; chi=10; psi=1
+x=21.731;	lambda=100; chi=10; psi=10
+x=1.9884;	lambda=100; chi=10; psi=100
+x=2.2308e+14;	lambda=100; chi=100; psi=1e-12
+x=21321;	lambda=100; chi=100; psi=0.01
+x=1981.2;	lambda=100; chi=100; psi=0.1
+x=195.86;	lambda=100; chi=100; psi=1
+x=17.792;	lambda=100; chi=100; psi=10
+x=2.9358;	lambda=100; chi=100; psi=100
+> 
+> 
+> ## --- end -------------------------------------------------------------------
+> 
+> 
+> #################################################################################
+> 
+> ## compareHistPdf <- function(n=10^5,lambda=0.5, chi=0.1, psi=2){
+> ## # function to compare the histogram of a sample with the theoretic pdf
+> ## # demonstrates the correctness of the generator
+> ##   y <- rgig(n=n,lambda=lambda,chi=chi,psi=psi)
+> ##   hist(y,breaks=100,freq=FALSE,
+> ##        main=paste("GIG ( lambda = ",lambda,", chi = ",chi,", psi = ",psi,")"))
+> ##   xval <- seq(0,max(y),length.out=5000) # to plot the corresponding density
+> ##   lines(xval,dgig(xval,lambda=lambda,chi=chi,psi=psi))
+> ## }
+> ## compareHistPdf(n=10^5,1,10,0.1)
+> ## compareHistPdf(n=10^5,-5,10,0.5)
+> ## compareHistPdf(n=10^5,-5,1,0.2)
+> ## compareHistPdf(n=10^5,-0.01,0.1,0.2)
+> ## 
+> ## #########################
+> ## # Chi square test for 4 different parameter settings
+> ## #
+> ## # is slow as the pgig function is slow
+> ## # requires the ghyp package
+> ## # library(ghyp)
+> ## # yu<- pgig(rgig(10000,0.5,0.3,4),0.5,0.3,4)
+> ## # res<-hist(yu)
+> ## # chisq.test(res$counts)
+> ## # yu<- pgig(rgig(10000,2.5,0.3,4),2.5,0.3,4)
+> ## # res<-hist(yu)
+> ## # chisq.test(res$counts)
+> ## # yu<- pgig(rgig(10000,2.5,1.e-17,4),2.5,1.e-17,4)
+> ## # res<-hist(yu)
+> ## # chisq.test(res$counts)
+> ## # yu<- pgig(rgig(10000,-2.5,13,4),-2.5,13,4)
+> ## # res<-hist(yu)
+> ## # chisq.test(res$counts)
+> 
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  0.284   0.020   0.290 
