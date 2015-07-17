@@ -1,6 +1,6 @@
 The GIG random number generator is implemented in C functions 
 'rgig' and 'do_rgig'.
-They are exported and can be used in C code in other package.
+They are exported and can be used in C code in other packages.
 
 Here is an example of the usage of 'rgig' within a package 
 called "mypack".
