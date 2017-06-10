@@ -20,8 +20,8 @@
   \tabular{ll}{
     Package: \tab GIGrvg          \cr
     Type:    \tab Package       \cr
-    Version: \tab 0.4           \cr
-    Date:    \tab 2015-07-17    \cr
+    Version: \tab 0.4.1         \cr
+    Date:    \tab 2017-06-08    \cr
     License: \tab GPL 2 or later\cr
   }
 

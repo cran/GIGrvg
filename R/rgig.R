@@ -18,7 +18,7 @@ function(n=1, lambda, chi, psi) {
   ## ------------------------------------------------------------------------
 
   ## generate sample
-  .Call("rgig", n, lambda, chi, psi, PACKAGE="GIGrvg")
+  .Call("rgig", n, lambda, chi, psi)
 }
 
 dgig <-
@@ -41,5 +41,5 @@ function(x, lambda, chi, psi, log = FALSE) {
   ## ------------------------------------------------------------------------
 
   ## generate sample
-  .Call("dgig", x, lambda, chi, psi, log, PACKAGE="GIGrvg")
+  .Call("dgig", x, lambda, chi, psi, log)
 }

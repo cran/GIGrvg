@@ -190,12 +190,13 @@ SEXP rgig(SEXP sexp_n, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi)
   GetRNGstate();
 
   /* run generator */
-  sexp_res = do_rgig(n, lambda, chi, psi);
+  PROTECT(sexp_res = do_rgig(n, lambda, chi, psi));
 
   /* Return state of PRNG to R */
   PutRNGstate();
 
   /* return result to R */
+  UNPROTECT(1);
   return (sexp_res);
 
 } /* end of rgig() */

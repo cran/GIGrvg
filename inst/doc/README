@@ -6,7 +6,7 @@ Here is an example of the usage of 'rgig' within a package
 called "mypack".
 
 For a description of 'do_rgig' the interested reader is
-refered its C code. 
+referred to its C code. 
 Differences to 'rgig' are:
  (1) do_rgig() does not call GetRNGstate() and PutRNGstate(). You have
      to take care of doing so in the function that calls do_rgig().
@@ -25,6 +25,7 @@ C code:
 
 #include <Rinternals.h> 
 #include <R_ext/Rdynload.h>
+#include <GIGrvg.h>
 
 SEXP my_rgig (SEXP n, SEXP lambda, SEXP chi, SEXP psi)
 { 

@@ -1,2 +1,4 @@
-useDynLib(GIGrvg)
-exportPattern("^[^\\.]")
+useDynLib(GIGrvg, .registration=TRUE, .fixes="C_")
+
+export("rgig")
+export("dgig")
