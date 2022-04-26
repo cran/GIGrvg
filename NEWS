@@ -1,3 +1,9 @@
+Version 0.6: 2022-04-26
+
+	- internal:
+	  replaced deprecated S-compatibility macro in C sources
+
+
 Version 0.5: 2017-06-09
 
 	- registered native routines

@@ -60,7 +60,8 @@ SEXP dgig(SEXP sexp_x, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi, SEXP sexp
 
   /* get array of points for which the density has to be evaluated */
   nx = length(sexp_x);
-  x = REAL(AS_NUMERIC(sexp_x));
+  PROTECT(sexp_x = AS_NUMERIC(sexp_x));
+  x = REAL(sexp_x);
 
   /* compute logarithm? */
   logvalue = *(LOGICAL( AS_LOGICAL(sexp_logvalue) ));
@@ -107,7 +108,7 @@ SEXP dgig(SEXP sexp_x, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi, SEXP sexp
 	    lambda, chi, psi);
     for(i=0; i<nx; i++)
       res[i] = ISNA(x[i]) ? NA_REAL : res_err;
-    UNPROTECT(1);
+    UNPROTECT(2);
     return sexp_res;
   }
 
@@ -150,14 +151,14 @@ SEXP dgig(SEXP sexp_x, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi, SEXP sexp
   }
 
   /* return result to R */
-  UNPROTECT(1);
+  UNPROTECT(2);
   return sexp_res;
   
 } /* end of dgig() */
 
 /*---------------------------------------------------------------------------*/
 
-#define ZTOL (DOUBLE_EPS*10.0)
+#define ZTOL (DBL_EPSILON*10.0)
 
 SEXP rgig(SEXP sexp_n, SEXP sexp_lambda, SEXP sexp_chi, SEXP sexp_psi)
 /*---------------------------------------------------------------------------*/
