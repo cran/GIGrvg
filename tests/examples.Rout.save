@@ -1,6 +1,6 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -1264,8 +1264,9 @@ f=1.9724; logf=0.67925	; lambda=100; chi=100; psi=100;mode=2.39716
 > 
 > ## --- check handling of invalid parameters ----------------------------------
 > 
-> stopifnot (iserror(rgig(0, 1,1,1)), TRUE)
-Error in rgig(0, 1, 1, 1) : sample size 'n' must be positive integer.
+> stopifnot (iserror(rgig(-1, 1,1,1)), TRUE)
+Error in rgig(-1, 1, 1, 1) : 
+  sample size 'n' must be non-negative integer.
 > 
 > stopifnot (iserror(rgig(1,-1,-1, 1)), TRUE)
 Error in rgig(1, -1, -1, 1) : 
@@ -1316,168 +1317,168 @@ Error in rgig(1, 1, 1, -1) :
 +                 stop ("result not finite")
 +         }
 + }}}
-x=1.8798e+14;	lambda=-100; chi=1e-12; psi=0
+x=5.3198e-15;	lambda=-100; chi=1e-12; psi=0
 x=5.8782e-15;	lambda=-100; chi=1e-12; psi=1e-12
 x=4.4685e-15;	lambda=-100; chi=1e-12; psi=0.01
 x=5.0685e-15;	lambda=-100; chi=1e-12; psi=0.1
 x=5.0803e-15;	lambda=-100; chi=1e-12; psi=1
 x=4.3483e-15;	lambda=-100; chi=1e-12; psi=10
 x=4.7721e-15;	lambda=-100; chi=1e-12; psi=100
-x=25264;	lambda=-100; chi=0.01; psi=0
+x=3.9583e-05;	lambda=-100; chi=0.01; psi=0
 x=4.704e-05;	lambda=-100; chi=0.01; psi=1e-12
 x=4.7187e-05;	lambda=-100; chi=0.01; psi=0.01
 x=4.5646e-05;	lambda=-100; chi=0.01; psi=0.1
 x=5.0488e-05;	lambda=-100; chi=0.01; psi=1
 x=5.8796e-05;	lambda=-100; chi=0.01; psi=10
 x=5.184e-05;	lambda=-100; chi=0.01; psi=100
-x=1923.7;	lambda=-100; chi=0.1; psi=0
+x=0.00051982;	lambda=-100; chi=0.1; psi=0
 x=0.00055508;	lambda=-100; chi=0.1; psi=1e-12
 x=0.00052737;	lambda=-100; chi=0.1; psi=0.01
 x=0.00060707;	lambda=-100; chi=0.1; psi=0.1
 x=0.0004717;	lambda=-100; chi=0.1; psi=1
 x=0.00054891;	lambda=-100; chi=0.1; psi=10
 x=0.00042325;	lambda=-100; chi=0.1; psi=100
-x=207.6;	lambda=-100; chi=1; psi=0
+x=0.004817;	lambda=-100; chi=1; psi=0
 x=0.0053621;	lambda=-100; chi=1; psi=1e-12
 x=0.0044687;	lambda=-100; chi=1; psi=0.01
 x=0.0047161;	lambda=-100; chi=1; psi=0.1
 x=0.00449;	lambda=-100; chi=1; psi=1
 x=0.0046914;	lambda=-100; chi=1; psi=10
 x=0.0050417;	lambda=-100; chi=1; psi=100
-x=19.294;	lambda=-100; chi=10; psi=0
+x=0.051829;	lambda=-100; chi=10; psi=0
 x=0.046797;	lambda=-100; chi=10; psi=1e-12
 x=0.050874;	lambda=-100; chi=10; psi=0.01
 x=0.046384;	lambda=-100; chi=10; psi=0.1
 x=0.04602;	lambda=-100; chi=10; psi=1
 x=0.053794;	lambda=-100; chi=10; psi=10
 x=0.057177;	lambda=-100; chi=10; psi=100
-x=1.9958;	lambda=-100; chi=100; psi=0
+x=0.50106;	lambda=-100; chi=100; psi=0
 x=0.53202;	lambda=-100; chi=100; psi=1e-12
 x=0.43132;	lambda=-100; chi=100; psi=0.01
 x=0.47831;	lambda=-100; chi=100; psi=0.1
 x=0.45277;	lambda=-100; chi=100; psi=1
 x=0.54904;	lambda=-100; chi=100; psi=10
 x=0.37316;	lambda=-100; chi=100; psi=100
-x=1.7539e+13;	lambda=-10; chi=1e-12; psi=0
+x=5.7015e-14;	lambda=-10; chi=1e-12; psi=0
 x=7.9626e-14;	lambda=-10; chi=1e-12; psi=1e-12
 x=5.7343e-14;	lambda=-10; chi=1e-12; psi=0.01
 x=7.2658e-14;	lambda=-10; chi=1e-12; psi=0.1
 x=4.9261e-14;	lambda=-10; chi=1e-12; psi=1
 x=4.6423e-14;	lambda=-10; chi=1e-12; psi=10
 x=5.1131e-14;	lambda=-10; chi=1e-12; psi=100
-x=2511.1;	lambda=-10; chi=0.01; psi=0
+x=0.00039824;	lambda=-10; chi=0.01; psi=0
 x=0.00065872;	lambda=-10; chi=0.01; psi=1e-12
 x=0.00064581;	lambda=-10; chi=0.01; psi=0.01
 x=0.00037175;	lambda=-10; chi=0.01; psi=0.1
 x=0.00060465;	lambda=-10; chi=0.01; psi=1
 x=0.0010324;	lambda=-10; chi=0.01; psi=10
 x=0.00039628;	lambda=-10; chi=0.01; psi=100
-x=181.53;	lambda=-10; chi=0.1; psi=0
+x=0.0055086;	lambda=-10; chi=0.1; psi=0
 x=0.005917;	lambda=-10; chi=0.1; psi=1e-12
 x=0.0060243;	lambda=-10; chi=0.1; psi=0.01
 x=0.005111;	lambda=-10; chi=0.1; psi=0.1
 x=0.0077388;	lambda=-10; chi=0.1; psi=1
 x=0.0064675;	lambda=-10; chi=0.1; psi=10
 x=0.0063866;	lambda=-10; chi=0.1; psi=100
-x=23.312;	lambda=-10; chi=1; psi=0
+x=0.042897;	lambda=-10; chi=1; psi=0
 x=0.042602;	lambda=-10; chi=1; psi=1e-12
 x=0.051869;	lambda=-10; chi=1; psi=0.01
 x=0.050046;	lambda=-10; chi=1; psi=0.1
 x=0.06084;	lambda=-10; chi=1; psi=1
 x=0.063388;	lambda=-10; chi=1; psi=10
 x=0.040537;	lambda=-10; chi=1; psi=100
-x=2.0016;	lambda=-10; chi=10; psi=0
+x=0.49961;	lambda=-10; chi=10; psi=0
 x=0.59059;	lambda=-10; chi=10; psi=1e-12
 x=0.49503;	lambda=-10; chi=10; psi=0.01
 x=0.52129;	lambda=-10; chi=10; psi=0.1
 x=0.28793;	lambda=-10; chi=10; psi=1
 x=0.34495;	lambda=-10; chi=10; psi=10
 x=0.18954;	lambda=-10; chi=10; psi=100
-x=0.19233;	lambda=-10; chi=100; psi=0
+x=5.1994;	lambda=-10; chi=100; psi=0
 x=3.2155;	lambda=-10; chi=100; psi=1e-12
 x=10.144;	lambda=-10; chi=100; psi=0.01
 x=7.6194;	lambda=-10; chi=100; psi=0.1
 x=7.1706;	lambda=-10; chi=100; psi=1
 x=1.9574;	lambda=-10; chi=100; psi=10
 x=0.92506;	lambda=-10; chi=100; psi=100
-x=3.9527e+12;	lambda=-1; chi=1e-12; psi=0
+x=2.5299e-13;	lambda=-1; chi=1e-12; psi=0
 x=8.2164e-13;	lambda=-1; chi=1e-12; psi=1e-12
 x=8.4697e-13;	lambda=-1; chi=1e-12; psi=0.01
 x=8.5986e-13;	lambda=-1; chi=1e-12; psi=0.1
 x=3.0314e-12;	lambda=-1; chi=1e-12; psi=1
 x=3.3836e-13;	lambda=-1; chi=1e-12; psi=10
 x=4.6253e-13;	lambda=-1; chi=1e-12; psi=100
-x=168;	lambda=-1; chi=0.01; psi=0
+x=0.0059525;	lambda=-1; chi=0.01; psi=0
 x=0.0033479;	lambda=-1; chi=0.01; psi=1e-12
 x=0.0037231;	lambda=-1; chi=0.01; psi=0.01
 x=0.0023678;	lambda=-1; chi=0.01; psi=0.1
 x=0.017296;	lambda=-1; chi=0.01; psi=1
 x=0.01159;	lambda=-1; chi=0.01; psi=10
 x=0.0051073;	lambda=-1; chi=0.01; psi=100
-x=32.048;	lambda=-1; chi=0.1; psi=0
+x=0.031204;	lambda=-1; chi=0.1; psi=0
 x=0.039645;	lambda=-1; chi=0.1; psi=1e-12
 x=0.76503;	lambda=-1; chi=0.1; psi=0.01
 x=0.30344;	lambda=-1; chi=0.1; psi=0.1
 x=0.0093096;	lambda=-1; chi=0.1; psi=1
 x=0.051207;	lambda=-1; chi=0.1; psi=10
 x=0.060959;	lambda=-1; chi=0.1; psi=100
-x=0.21698;	lambda=-1; chi=1; psi=0
+x=4.6088;	lambda=-1; chi=1; psi=0
 x=2.3642;	lambda=-1; chi=1; psi=1e-12
 x=7.9364;	lambda=-1; chi=1; psi=0.01
 x=0.19749;	lambda=-1; chi=1; psi=0.1
 x=0.47418;	lambda=-1; chi=1; psi=1
 x=0.44547;	lambda=-1; chi=1; psi=10
 x=0.07695;	lambda=-1; chi=1; psi=100
-x=0.1525;	lambda=-1; chi=10; psi=0
+x=6.5574;	lambda=-1; chi=10; psi=0
 x=7.394;	lambda=-1; chi=10; psi=1e-12
 x=6.9632;	lambda=-1; chi=10; psi=0.01
 x=9.9105;	lambda=-1; chi=10; psi=0.1
 x=0.94265;	lambda=-1; chi=10; psi=1
 x=1.0247;	lambda=-1; chi=10; psi=10
 x=0.2205;	lambda=-1; chi=10; psi=100
-x=0.017079;	lambda=-1; chi=100; psi=0
+x=58.55;	lambda=-1; chi=100; psi=0
 x=96.213;	lambda=-1; chi=100; psi=1e-12
 x=43.965;	lambda=-1; chi=100; psi=0.01
 x=11.634;	lambda=-1; chi=100; psi=0.1
 x=14.088;	lambda=-1; chi=100; psi=1
 x=3.6552;	lambda=-1; chi=100; psi=10
 x=1.0168;	lambda=-1; chi=100; psi=100
-x=223780000;	lambda=-0.1; chi=1e-12; psi=0
+x=4.4687e-09;	lambda=-0.1; chi=1e-12; psi=0
 x=4.5862e-13;	lambda=-0.1; chi=1e-12; psi=1e-12
 x=5.3712e-06;	lambda=-0.1; chi=1e-12; psi=0.01
 x=1.1863e-09;	lambda=-0.1; chi=1e-12; psi=0.1
 x=1.8997e-12;	lambda=-0.1; chi=1e-12; psi=1
 x=4.1717e-07;	lambda=-0.1; chi=1e-12; psi=10
 x=8.018e-09;	lambda=-0.1; chi=1e-12; psi=100
-x=25.165;	lambda=-0.1; chi=0.01; psi=0
+x=0.039738;	lambda=-0.1; chi=0.01; psi=0
 x=3.1473e+10;	lambda=-0.1; chi=0.01; psi=1e-12
 x=0.23561;	lambda=-0.1; chi=0.01; psi=0.01
 x=0.4198;	lambda=-0.1; chi=0.01; psi=0.1
 x=0.067642;	lambda=-0.1; chi=0.01; psi=1
 x=0.038787;	lambda=-0.1; chi=0.01; psi=10
 x=0.0044857;	lambda=-0.1; chi=0.01; psi=100
-x=11.678;	lambda=-0.1; chi=0.1; psi=0
+x=0.085631;	lambda=-0.1; chi=0.1; psi=0
 x=3928.4;	lambda=-0.1; chi=0.1; psi=1e-12
 x=6.5582;	lambda=-0.1; chi=0.1; psi=0.01
 x=0.09847;	lambda=-0.1; chi=0.1; psi=0.1
 x=0.29626;	lambda=-0.1; chi=0.1; psi=1
 x=0.10684;	lambda=-0.1; chi=0.1; psi=10
 x=0.052127;	lambda=-0.1; chi=0.1; psi=100
-x=0.011599;	lambda=-0.1; chi=1; psi=0
+x=86.213;	lambda=-0.1; chi=1; psi=0
 x=548.16;	lambda=-0.1; chi=1; psi=1e-12
 x=109.53;	lambda=-0.1; chi=1; psi=0.01
 x=1.2215;	lambda=-0.1; chi=1; psi=0.1
 x=0.23694;	lambda=-0.1; chi=1; psi=1
 x=0.2352;	lambda=-0.1; chi=1; psi=10
 x=0.12375;	lambda=-0.1; chi=1; psi=100
-x=3.4102e-06;	lambda=-0.1; chi=10; psi=0
+x=293230;	lambda=-0.1; chi=10; psi=0
 x=196.95;	lambda=-0.1; chi=10; psi=1e-12
 x=12.69;	lambda=-0.1; chi=10; psi=0.01
 x=3.7853;	lambda=-0.1; chi=10; psi=0.1
 x=2.2381;	lambda=-0.1; chi=10; psi=1
 x=0.50362;	lambda=-0.1; chi=10; psi=10
 x=0.28161;	lambda=-0.1; chi=10; psi=100
-x=3.3936e-10;	lambda=-0.1; chi=100; psi=0
+x=2946700000;	lambda=-0.1; chi=100; psi=0
 x=4229;	lambda=-0.1; chi=100; psi=1e-12
 x=98.266;	lambda=-0.1; chi=100; psi=0.01
 x=78.511;	lambda=-0.1; chi=100; psi=0.1
@@ -1732,4 +1733,4 @@ x=2.9358;	lambda=100; chi=100; psi=100
 > 
 > proc.time()
    user  system elapsed 
-  0.284   0.020   0.290 
+  0.266   0.024   0.299 

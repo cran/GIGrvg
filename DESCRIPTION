@@ -1,8 +1,8 @@
 Package: GIGrvg
 Type: Package
 Title: Random Variate Generator for the GIG Distribution
-Version: 0.6
-Date: 2022-04-26
+Version: 0.7
+Date: 2022-05-05
 Author: Josef Leydold and Wolfgang Hormann
 Maintainer: Josef Leydold <josef.leydold@wu.ac.at>
 Description: 
@@ -11,6 +11,6 @@ Description:
 License: GPL (>= 2)
 LazyLoad: yes
 NeedsCompilation: yes
-Packaged: 2022-04-26 06:47:11 UTC; leydold
+Packaged: 2022-05-05 11:08:59 UTC; leydold
 Repository: CRAN
-Date/Publication: 2022-04-26 11:30:06 UTC
+Date/Publication: 2022-05-05 11:50:02 UTC

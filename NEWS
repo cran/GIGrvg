@@ -1,3 +1,11 @@
+
+Version 0.7: 2022-05-05
+
+	- fixed issue with small value of parameters chi and psi
+
+	- rgig(n=0, ...) now returns numeric(0) as do R core RNGs like rnorm(n=0).
+
+
 Version 0.6: 2022-04-26
 
 	- internal:

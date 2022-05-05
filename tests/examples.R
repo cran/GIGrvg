@@ -154,7 +154,7 @@ for (l in lambda) { for (c in chi) { for (p in psi) {
 
 ## --- check handling of invalid parameters ----------------------------------
 
-stopifnot (iserror(rgig(0, 1,1,1)), TRUE)
+stopifnot (iserror(rgig(-1, 1,1,1)), TRUE)
 
 stopifnot (iserror(rgig(1,-1,-1, 1)), TRUE)
 stopifnot (iserror(rgig(1,-1, 0, 1)), TRUE)

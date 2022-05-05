@@ -67,7 +67,7 @@ dgig(x, lambda, chi, psi, log = FALSE)
   \eqn{\psi\,\chi\geq 1/4}{\psi times \chi >= 1/4}
   two variants of the Ratio-of-Uniforms method due to Lehner (1989) are 
   used. These are quite similar to the widely used algorithm by Dapunar
-  (e.g. in package \pkg{\link[ghyp]{ghyp}}) but have a faster setup.
+  but have a faster setup.
   When the density is not T-concave then a new algorithm with a
   uniformly rejection constant is used.
   (In the latter case Dagpunar's algorithm may become extremely slow or
