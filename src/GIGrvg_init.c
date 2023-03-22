@@ -37,6 +37,7 @@ R_init_GIGrvg (DllInfo *dll  ATTRIBUTE__UNUSED)
   /* Register native routines */
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
+  R_forceSymbols(dll, TRUE);
 }
 
 /*---------------------------------------------------------------------------*/

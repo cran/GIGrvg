@@ -20,8 +20,8 @@
   \tabular{ll}{
     Package: \tab GIGrvg          \cr
     Type:    \tab Package       \cr
-    Version: \tab 0.7           \cr
-    Date:    \tab 2022-05-05    \cr
+    Version: \tab 0.8           \cr
+    Date:    \tab 2023-03-22    \cr
     License: \tab GPL 2 or later\cr
   }
 
@@ -49,10 +49,26 @@
 }
 
 \references{%
-  Wolfgang \enc{Hörmann}{Hoermann} and Josef Leydold (2013).
+  Wolfgang \enc{Hörmann}{Hoermann} and Josef Leydold (2014).
   Generating generalized inverse Gaussian random variates,
-  Statistics and Computing (to appear),
+  Statistics and Computing 24, 547--557,
   DOI: 10.1007/s11222-013-9387-3
+  
+  See also Research Report Series / Department of Statistics and Mathematics 
+  Nr. 123, Department of Statistics and Mathematics,
+  WU Vienna University of Economics and Business,
+  \url{https://research.wu.ac.at/en/publications/generating-generalized-inverse-gaussian-random-variates-3}.
+
+  J. S. Dagpunar (1989).
+  An easily implemented generalised inverse Gaussian generator,
+  Comm. Statist. B -- Simulation Comput. 18, 703--710.
+
+  Karl Lehner (1989).
+  Erzeugung von Zufallszahlen \enc{für}{fuer} zwei exotische
+  stetige Verteilungen,
+  Diploma Thesis, 107 pp.,
+  Technical University Graz, Austria
+  (in German).
 }
 
 \examples{

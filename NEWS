@@ -1,3 +1,10 @@
+Version 0.8: 2023-03-22
+
+	- updated references to papers
+
+	- internal:
+	  register native symbols in DLL
+	  
 
 Version 0.7: 2022-05-05
 
@@ -37,9 +44,9 @@ Version 0.3: 2014-05-12
 Version 0.2: 2014-02-06
 
 	- Made C function rgig() callable from other packages
-          (see doc/README).
+	  (see doc/README).
 
 
 Version 0.1: 2013-05-27
 
-        - First public release.
+	- First public release.

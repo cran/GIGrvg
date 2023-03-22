@@ -1,6 +1,5 @@
 
-rgig <-
-function(n=1, lambda, chi, psi) {
+rgig <- function(n=1, lambda, chi, psi) {
   ## ------------------------------------------------------------------------
   ## Generate GIG distributed random variates
   ##
@@ -18,11 +17,10 @@ function(n=1, lambda, chi, psi) {
   ## ------------------------------------------------------------------------
 
   ## generate sample
-  .Call("rgig", n, lambda, chi, psi)
+  .Call(C_rgig, n, lambda, chi, psi)
 }
 
-dgig <-
-function(x, lambda, chi, psi, log = FALSE) {
+dgig <- function(x, lambda, chi, psi, log = FALSE) {
   ## ------------------------------------------------------------------------
   ## Generate GIG distributed random variates
   ##
@@ -41,5 +39,5 @@ function(x, lambda, chi, psi, log = FALSE) {
   ## ------------------------------------------------------------------------
 
   ## generate sample
-  .Call("dgig", x, lambda, chi, psi, log)
+  .Call(C_dgig, x, lambda, chi, psi, log)
 }
